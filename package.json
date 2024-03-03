@@ -1,0 +1,11 @@
+{
+  "name": "mulitplayer-dino",
+  "version": "1.0.0",
+  "description": "a multiplayer version of Dino game",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abhijith SJ",
+  "license": "ISC"
+}
