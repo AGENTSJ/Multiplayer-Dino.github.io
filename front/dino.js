@@ -1,6 +1,7 @@
 import InputController from "./js/InputController.js";
 import GameFunctions from "./js/gamefunctions.js";
 import SceneFunction from "./js/sceneFunction.js";
+import assets from "./js/assets.js";
 
 let inputController;
 let sceneFunction = new SceneFunction();
@@ -11,28 +12,30 @@ let obstacleArr = [];
 
 // pre declaring gameObjects
 let dino;
-let cactusImgs=[];
+let obstacleAssetArr=[];
 
 
-//loading dino asset and running animation loop
-sceneFunction.loadImages(["../assets/dino.png"]).then(
-    
+
+sceneFunction.loadImages(assets.playerPath).then(
     (resolved)=>{
-        let dinoImg = resolved[0]
-        dino = gameFunctions.createGameObject(dinoImg,50,50,gameScene.canvas.height-50, 10,true,true,true)
-        inputController= new InputController(dino);
+        let dinoObj = resolved[0];
+        dino = gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,gameScene.canvas.height-dinoObj.height, 10,true,true,true)
+        inputController = new InputController(dino);
         requestAnimationFrame(GameLoop)
     }
-    
 )
-sceneFunction.loadImages(["../assets/cactus.png"]).then((resolved)=>{cactusImgs=cactusImgs.push(...resolved)});
-gameFunctions.spawnObstacles(obstacleArr,cactusImgs);
+
+sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
+gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);
 
 function GameLoop(){
 
     gameScene.context.clearRect(0,0,gameScene.canvas.width,gameScene.canvas.height);
+
     sceneFunction.addObject_toScene(dino,gameScene.context,gameScene.canvas);
+
     gameFunctions.addAllObstacles(obstacleArr);
+
     requestAnimationFrame(GameLoop);
 }
 

@@ -14,22 +14,27 @@ class SceneFunction{
         return scene;
     }
 
-    async loadImages(imagePaths) {
+
+    async loadImages(imageInfoArr) {
         let images = [];
-    
-        for (let path of imagePaths) {
+        
+        for(let obj of imageInfoArr){
             let image = new Image();
-            image.src = path;
-    
-            let loadedImage = new Promise((resolve, reject) => {
-                image.onload = () => resolve(image);
-                image.onerror = reject;
-            });
-    
-            images.push(loadedImage);
+            image.src = obj.path;
+            
+            let loadingPromise = new Promise((resolve,reject)=>{
+                image.onload = ()=>{
+                    resolve({img:image,height:obj.height,width:obj.width})
+                }
+                image.onerror = ()=>{
+                    reject("failed to load image")
+                }
+            })
+            images.push(loadingPromise)
+           
         }
-    
-        return Promise.all(images);
+        return Promise.all(images)
+        
     }
 
     addGravity(gameObject,canvas){

@@ -1,10 +1,12 @@
 import SceneFunction from "./sceneFunction.js";
-
+function getRandomValue(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 class GameFunctions{
     constructor(canvas,context){
         this.canvas = canvas;
-        this.sceneFunction = new SceneFunction()
-        this.context = context
+        this.sceneFunction = new SceneFunction();
+        this.context = context;
     }
 
     createGameObject(img,width,height,y,x,ground,collision,gravity){
@@ -28,17 +30,22 @@ class GameFunctions{
         }
     }
 
-    spawnObstacles(obsArr,obstacleImgs){
+  
+
+    spawnObstacles(obsArr,obstacle_Asset_Arr){
         
         setInterval(()=>{
     
-            if(obstacleImgs!==undefined){
-                let obstacleImg = obstacleImgs[0]
+            if(obstacle_Asset_Arr!==undefined){
+                let randomIdx  = getRandomValue(0,obstacle_Asset_Arr.length-1);
+                let obstacleImgObj = obstacle_Asset_Arr[randomIdx];
 
-                let obst = this.createGameObject(obstacleImg,30,50,this.canvas.height-50,1000,true,true,true);
+                let obstacleImg = obstacleImgObj.img;
+
+                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false);
                 obsArr.push(
                     obst
-                )
+                );
                 if(obsArr[0].x<0){
                     obsArr.shift();
                 }
@@ -47,7 +54,6 @@ class GameFunctions{
         },500)
         
     }
-
     addAllObstacles(obsArr){
         for(let i =0;i<obsArr.length;i++){
             
