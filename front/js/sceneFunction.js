@@ -38,8 +38,8 @@ class SceneFunction{
     }
 
     addGravity(gameObject,canvas){
-        let gr = 5;
-        if(gameObject.y <= canvas.height-gameObject.height){
+        let gr = 6;
+        if(gameObject.y <= canvas.height-gameObject.height-5){
             gameObject.y+=gr;
         }else{
             gameObject.ground =true;
@@ -52,6 +52,10 @@ class SceneFunction{
             context.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
             if(obj.gravity){
                 this.addGravity(obj,canvas);
+            }
+
+            if(obj.state!==undefined && obj.state){
+                obj.stateFn(obj);
             }
         }
     }

@@ -7,19 +7,19 @@ let inputController;
 let sceneFunction = new SceneFunction();
 let gameScene = sceneFunction.createScene(1080,200);
 
-let gameFunctions = new GameFunctions(gameScene.canvas,gameScene.context);
+let gameFunctions = new GameFunctions(gameScene.canvas,gameScene.context,4);
 let obstacleArr = [];
 
 // pre declaring gameObjects
 let dino;
 let obstacleAssetArr=[];
 
-
+// setTimeout(()=>{console.log("speed");gameFunctions.obstacleSpeed=10},3000)
 
 sceneFunction.loadImages(assets.playerPath).then(
     (resolved)=>{
         let dinoObj = resolved[0];
-        dino = gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,gameScene.canvas.height-dinoObj.height, 10,true,true,true)
+        dino = gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
         inputController = new InputController(dino);
         requestAnimationFrame(GameLoop)
     }

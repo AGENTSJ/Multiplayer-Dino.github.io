@@ -1,15 +1,17 @@
 import SceneFunction from "./sceneFunction.js";
+
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 class GameFunctions{
-    constructor(canvas,context){
+    constructor(canvas,context,obstacleSpeed){
         this.canvas = canvas;
         this.sceneFunction = new SceneFunction();
         this.context = context;
+        this.obstacleSpeed=obstacleSpeed;
     }
 
-    createGameObject(img,width,height,y,x,ground,collision,gravity){
+    createGameObject(img,width,height,y,x,ground,collision,gravity,state,stateFn){
         return(
             {
                 img:img,
@@ -19,18 +21,18 @@ class GameFunctions{
                 x: x,
                 ground:ground,
                 collision:collision,
-                gravity:gravity
+                gravity:gravity,
+                state:state,
+                stateFn:stateFn
             }
         )
     }
 
     moveLeft(obj){
         if(obj!==undefined){
-            obj.x-=2;
+            obj.x-=this.obstacleSpeed;
         }
     }
-
-  
 
     spawnObstacles(obsArr,obstacle_Asset_Arr){
         
@@ -42,7 +44,8 @@ class GameFunctions{
 
                 let obstacleImg = obstacleImgObj.img;
 
-                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false);
+                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+                obst.stateFn = ()=>{this.moveLeft(obst)}
                 obsArr.push(
                     obst
                 );
@@ -50,15 +53,16 @@ class GameFunctions{
                     obsArr.shift();
                 }
             }
-            // console.log(obsArr.length);
-        },500)
+ 
+        },1000)
         
     }
+
     addAllObstacles(obsArr){
         for(let i =0;i<obsArr.length;i++){
             
             this.sceneFunction.addObject_toScene(obsArr[i],this.context,this.canvas);
-            this.moveLeft(obsArr[i]);
+            // this.moveLeft(obsArr[i]);
         }
     }
 

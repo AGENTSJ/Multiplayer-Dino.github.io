@@ -3,16 +3,21 @@ class InputController{
     constructor(playerDino){
 
         document.addEventListener("keydown",(event)=>{
-            if(event.code ==="Space"){
-                this.jumpfn(playerDino);
+            if(event.code ==="Space" &&playerDino.ground){
+                playerDino.state = true;
+                playerDino.stateFn = this.jumpfn;
             }
         })
     }
     jumpfn(obj){
-
-        if(obj.ground){
-            obj.y -=100;
-            obj.ground = false;
+        if(obj.state!==undefined && obj.state===true){
+                
+            if(obj.y<=0){
+                obj.state=false;
+            }else{
+                obj.ground = false;
+                obj.y-=15;
+            }
         }
         
     }
