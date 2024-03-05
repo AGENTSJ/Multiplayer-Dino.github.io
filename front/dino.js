@@ -1,117 +1,39 @@
+import InputController from "./js/InputController.js";
+import GameFunctions from "./js/gamefunctions.js";
+import SceneFunction from "./js/sceneFunction.js";
 
-let scene = document.getElementById("gameScene");
-scene.width = 1080;
-scene.height = 200;
-const context = scene.getContext("2d");
+let inputController;
+let sceneFunction = new SceneFunction();
+let gameScene = sceneFunction.createScene(1080,200);
 
-
-let dinoImg = new Image();
-let cactusImg = new Image();
-
-dinoImg.src = "../assets/dino.png";
-cactusImg.src = "../assets/cactus.png";
-
-let dino;
-let cactus;
-
+let gameFunctions = new GameFunctions(gameScene.canvas,gameScene.context);
 let obstacleArr = [];
 
-function jumpfn(obj){
+// pre declaring gameObjects
+let dino;
+let cactusImgs=[];
 
-    if(obj.ground){
-        obj.y -=cactus.height+100;
-        obj.ground = false
+
+//loading dino asset and running animation loop
+sceneFunction.loadImages(["../assets/dino.png"]).then(
+    
+    (resolved)=>{
+        let dinoImg = resolved[0]
+        dino = gameFunctions.createGameObject(dinoImg,50,50,gameScene.canvas.height-50, 10,true,true,true)
+        inputController= new InputController(dino);
+        requestAnimationFrame(GameLoop)
     }
     
-}
-function moveLeft(obj){
-    if(obj!==undefined){
-        obj.x-=2;
-    }
-}
-function spawnObstacles(obsArr){
+)
+sceneFunction.loadImages(["../assets/cactus.png"]).then((resolved)=>{cactusImgs=cactusImgs.push(...resolved)});
+gameFunctions.spawnObstacles(obstacleArr,cactusImgs);
 
-    setInterval(()=>{
+function GameLoop(){
 
-        if(cactusImg!==undefined){
-
-            obst = createGameObject(img=cactusImg,width=30,height=50,y=scene.height-this.height,x=1000,ground=true,collision=true,gravity=true);
-            obsArr.push(
-                obst
-            )
-            if(obsArr[0].x<0){
-                obsArr.shift();
-            }
-        }
-        console.log(obsArr.length);
-    },500)
-    
-}
-function addAllObstacles(obsArr){
-    for(let i =0;i<obsArr.length;i++){
-        
-        addObject_toScene(obsArr[i]);
-        moveLeft(obsArr[i]);
-    }
+    gameScene.context.clearRect(0,0,gameScene.canvas.width,gameScene.canvas.height);
+    sceneFunction.addObject_toScene(dino,gameScene.context,gameScene.canvas);
+    gameFunctions.addAllObstacles(obstacleArr);
+    requestAnimationFrame(GameLoop);
 }
 
 
-function addGravity(gameObject){
-    let gr = 5;
-    if(gameObject.y <= scene.height-gameObject.height){
-        gameObject.y+=gr;
-    }else{
-        gameObject.ground =true
-    }
-}
-function addObject_toScene(obj){
-    if (obj!==undefined){
-
-        context.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
-        if(obj.gravity){
-            addGravity(obj)
-        }
-    }
-}
-
-let space = document.addEventListener("keydown",(event)=>{
-    if(event.code ==="Space"){
-       jumpfn(dino);
-    }
-})
-
-function createGameObject(img,width,height,y,x,ground,collision,gravity){
-    return(
-        {
-            img:img,
-            width:width,
-            height:height,
-            y:y,
-            x: x,
-            ground:ground,
-            collision:collision,
-            gravity:gravity
-        }
-    )
-}
-
-//execution 
-cactusImg.onload = ()=>{
-    cactus = createGameObject(img=cactusImg,width=30,height=50,y=scene.height-this.height,x=1000,ground=true,collision=true,gravity=true);
-}
-dinoImg.onload = function(){
-    
-    dino = createGameObject(img=dinoImg,width=50,height=50,y=scene.height-this.height,x= 10,ground=true,collision=true,gravity=true);
-    requestAnimationFrame(update);
-}
-
-spawnObstacles(obstacleArr)
-
-
-function update(){
-    context.clearRect(0,0,scene.width,scene.height);
-    addObject_toScene(dino);
-    addAllObstacles(obstacleArr)
-    requestAnimationFrame(update);
-
-}
