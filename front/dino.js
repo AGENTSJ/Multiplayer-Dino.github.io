@@ -14,7 +14,7 @@ let obstacleArr = [];
 let dino;
 let obstacleAssetArr=[];
 
-// setTimeout(()=>{console.log("speed");gameFunctions.obstacleSpeed=10},3000)
+
 
 sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
 gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);

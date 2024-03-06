@@ -4,7 +4,7 @@ class InputController{
 
         document.addEventListener("keydown",(event)=>{
             if(event.code ==="Space" &&playerDino.ground){
-                playerDino.state = true;
+                playerDino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
                 playerDino.stateFn = this.jumpfn;
             }
         })
