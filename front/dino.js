@@ -16,27 +16,32 @@ let obstacleAssetArr=[];
 
 // setTimeout(()=>{console.log("speed");gameFunctions.obstacleSpeed=10},3000)
 
+sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
+gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);
+
 sceneFunction.loadImages(assets.playerPath).then(
     (resolved)=>{
         let dinoObj = resolved[0];
         dino = gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
         inputController = new InputController(dino);
+        gameFunctions.player = dino;
         requestAnimationFrame(GameLoop)
     }
 )
 
-sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
-gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);
+
 
 function GameLoop(){
+    if(gameFunctions.state){
 
-    gameScene.context.clearRect(0,0,gameScene.canvas.width,gameScene.canvas.height);
-
-    sceneFunction.addObject_toScene(dino,gameScene.context,gameScene.canvas);
-
-    gameFunctions.addAllObstacles(obstacleArr);
-
-    requestAnimationFrame(GameLoop);
+        gameScene.context.clearRect(0,0,gameScene.canvas.width,gameScene.canvas.height);
+    
+        sceneFunction.addObject_toScene(dino,gameScene.context,gameScene.canvas);
+    
+        gameFunctions.addAllObstacles(obstacleArr);
+    
+        requestAnimationFrame(GameLoop);
+    }
 }
 
 

@@ -3,12 +3,17 @@ import SceneFunction from "./sceneFunction.js";
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 class GameFunctions{
     constructor(canvas,context,obstacleSpeed){
         this.canvas = canvas;
         this.sceneFunction = new SceneFunction();
         this.context = context;
         this.obstacleSpeed=obstacleSpeed;
+        this.spawnRate = 1000;//spawn 1 obst per 1 second
+        this.player = undefined;
+        this.state = true;
     }
 
     createGameObject(img,width,height,y,x,ground,collision,gravity,state,stateFn){
@@ -34,6 +39,24 @@ class GameFunctions{
         }
     }
 
+    collisionWithPlayer(obj){
+        // verbose fn
+        let slack = 10;
+        let xp1 =this.player.x+slack;
+        let xp2 = this.player.x+this.player.width-slack;
+        let xobs1 = obj.x;
+        let xobs2 = obj.x+obj.width;
+        
+        let yp1 = this.player.y+slack;
+        let yp2 = this.player.y+this.player.height-slack;
+        let yobs1 = obj.y;
+        let yobs2 = obj.y+obj.height;
+
+        if(xp2>xobs1 && xp1<xobs2 && yp1<yobs2 && yp2>yobs1){
+            this.state = false;//game state
+        }
+
+    }
     spawnObstacles(obsArr,obstacle_Asset_Arr){
         
         setInterval(()=>{
@@ -45,7 +68,10 @@ class GameFunctions{
                 let obstacleImg = obstacleImgObj.img;
 
                 let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
-                obst.stateFn = ()=>{this.moveLeft(obst)}
+                obst.stateFn = ()=>{
+                    this.moveLeft(obst);
+                    this.collisionWithPlayer(obst)
+                }
                 obsArr.push(
                     obst
                 );
@@ -54,7 +80,7 @@ class GameFunctions{
                 }
             }
  
-        },1000)
+        },this.spawnRate)
         
     }
 
