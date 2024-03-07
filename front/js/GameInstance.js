@@ -5,10 +5,11 @@ import assets from "./assets.js";
 import Connections from "./connection.js";
 
 class SinglePlayer{
+
     constructor(){
 
-        let connection = new Connections();
-        connection.hostSession()
+        this.connection = new Connections();
+        this.connection.hostSession()
         let inputController;
         let sceneFunction = new SceneFunction();
         let gameScene = sceneFunction.createScene(1080,200);
@@ -19,7 +20,7 @@ class SinglePlayer{
         // pre declaring gameObjects
         let dino;
         let obstacleAssetArr=[];
-
+        
         sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
         gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);
 
@@ -54,11 +55,11 @@ class SinglePlayer{
 class MultiPlayer{
     constructor(){
 
-        let connection = new Connections();
+        this.connection = new Connections();
         let inputController;
         let sceneFunction = new SceneFunction();
         let gameScene = sceneFunction.createScene(1080,200);
-        let remoteConnection = connection.remoteConnection;
+       
         let gameFunctions = new GameFunctions(gameScene.canvas,gameScene.context,4);
         let obstacleArr = [];
 
@@ -66,7 +67,9 @@ class MultiPlayer{
         let dino;
         let obstacleAssetArr=[];
         
-        connection.joinSession();
+        this.connection.joinSession();
+
+
 
         sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{obstacleAssetArr.push(...resolved)});
         gameFunctions.spawnObstacles(obstacleArr,obstacleAssetArr);

@@ -2,21 +2,21 @@ class Connections{
 
     constructor(){
         this.session = false;
+        this.rtc = new WebRTC();
     }
     hostSession(){
         this.session = true;
-        HostWebRTC();
+        this.rtc.HostWebRTC();
     }
     networkListner(){
 
     }
     remoteConnection(){
-        let textar = document.getElementById("sdp")
+        let textar = document.getElementById("sdp");
         let offerObj = JSON.parse(textar.value);
         textar.value = "";
-        
-        
-
+        console.log(offerObj);
+        this.rtc.peerConnection.setRemoteDescription(offerObj);
     }
     joinSession(){
         this.session = true;
@@ -24,8 +24,7 @@ class Connections{
         let offerObj = JSON.parse(textar.value);
         textar.value = "";
         let offer = new RTCSessionDescription({type:"offer", sdp:offerObj.sdp});
-        // console.log(new );
-        joinWebRTC(offer);
+        this.rtc.joinWebRTC(offer);
     }
     sendPlayerState(){
         // console.log("jumped");
@@ -39,105 +38,71 @@ class Connections{
 }
 export default Connections;
 
-// class WebRTC{
-//     constructor(){
-//         this.peerConnection =null;
-//     }
-//     HostWebRTC() {
-//         peerConnection = new RTCPeerConnection(configuration);
-//         dataChannel = peerConnection.createDataChannel('jsonChannel');
-    
-//         dataChannel.onopen = handleDataChannelOpen;
-//         dataChannel.onmessage = handleDataChannelMessage;
-    
-//         peerConnection.onicecandidate = handleICECandidateEvent;
-//         peerConnection.createOffer()
-//             .then(offer => peerConnection.setLocalDescription(offer))
-//             .catch(logError);
-//     }
-//     joinWebRTC(offer) {
-//         peerConnection = new RTCPeerConnection(configuration);
-    
-//         peerConnection.ondatachannel = handleDataChannelEvent;
-//         peerConnection.onicecandidate = handleICECandidateEvent;
-    
-//         peerConnection.setRemoteDescription(offer)
-//             .then(() => peerConnection.createAnswer())
-//             .then(answer => peerConnection.setLocalDescription(answer))
-//             .catch(logError);
-//     }
-//     handleDataChannelOpen() {
-//         console.log('Data channel open');
-//     }
-//     handleDataChannelMessage(event) {
-//         const message = JSON.parse(event.data);
-//         console.log(message);
-//     }
-// }
 
-const configuration = {
-    iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' }
-    ]
-};
+class WebRTC{
+    constructor(){
+        this.peerConnection;
+        this.dataChannel;
+        this.configuration = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' }
+            ]
+        };
+        this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
 
-let peerConnection;
-let dataChannel;
-
-function HostWebRTC() {
-    peerConnection = new RTCPeerConnection(configuration);
-    dataChannel = peerConnection.createDataChannel('jsonChannel');
-
-    dataChannel.onopen = handleDataChannelOpen;
-    dataChannel.onmessage = handleDataChannelMessage;
-
-    peerConnection.onicecandidate = handleICECandidateEvent;
-    peerConnection.createOffer()
-        .then(offer => peerConnection.setLocalDescription(offer))
-        .catch(logError);
-}
-
-function joinWebRTC(offer) {
-    peerConnection = new RTCPeerConnection(configuration);
-
-    peerConnection.ondatachannel = handleDataChannelEvent;
-    peerConnection.onicecandidate = handleICECandidateEvent;
-
-    peerConnection.setRemoteDescription(offer)
-        .then(() => peerConnection.createAnswer())
-        .then(answer => peerConnection.setLocalDescription(answer))
-        .catch(logError);
-}
-
-function handleDataChannelOpen() {
-    console.log('Data channel open');
-}
-
-function handleDataChannelMessage(event) {
-    const message = JSON.parse(event.data);
-    console.log(message);
-}
-
-function handleICECandidateEvent(event) {
-    if (event.candidate) {
-        let txtar = document.getElementById("sdp");
-        txtar.value = JSON.stringify(peerConnection.localDescription)
-        console.log('ICE candidate:\n', txtar.value);
     }
-}
-
-function sendMessage() {
+    HostWebRTC() {
+        this.peerConnection = new RTCPeerConnection(this.configuration);
+        this.dataChannel = this.peerConnection.createDataChannel('jsonChannel');
+    
+        this.dataChannel.onopen = this.handleDataChannelOpen;
+        this.dataChannel.onmessage = this.handleDataChannelMessage;
+    
+        this.peerConnection.onicecandidate = this.handleICECandidateEvent;
+        this.peerConnection.createOffer()
+            .then(offer => this.peerConnection.setLocalDescription(offer))
+            .catch(this.logError);
+    }
+    handleICECandidateEvent(event) {
+        if (event.candidate) {
+            let txtar = document.getElementById("sdp");
+            txtar.value = JSON.stringify(this.peerConnection.localDescription)
+            // console.log('ICE candidate:\n', txtar.value);
+            // console.log(this.peerConnection);
+        }
+    }
+    joinWebRTC(offer) {
+        this.peerConnection = new RTCPeerConnection(this.configuration);
+    
+        this.peerConnection.ondatachannel = this.handleDataChannelEvent;
+        this.peerConnection.onicecandidate = this.handleICECandidateEvent;
+    
+        this.peerConnection.setRemoteDescription(offer)
+            .then(() => this.peerConnection.createAnswer())
+            .then(answer => this.peerConnection.setLocalDescription(answer))
+            .catch(this.logError);
+    }
+    handleDataChannelOpen() {
+        console.log('Data channel open');
+    }
+    handleDataChannelMessage(event) {
+        const message = JSON.parse(event.data);
+        console.log(message);
+    } 
+    sendMessage() {
    
-    dataChannel.send(JSON.stringify({"hello":"world"}));
-}
+        this.dataChannel.send(JSON.stringify({"hello":"world"}));
+    }
+    logError(error) {
+        console.error(error);
+    }
+    handleDataChannelEvent(event) {
+        this.dataChannel = event.channel;
+        this.dataChannel.onopen = this.handleDataChannelOpen;
+        this.dataChannel.onmessage = this.handleDataChannelMessage;
+    }
 
-function logError(error) {
-    console.error(error);
-}
-function handleDataChannelEvent(event) {
-    dataChannel = event.channel;
-    dataChannel.onopen = handleDataChannelOpen;
-    dataChannel.onmessage = handleDataChannelMessage;
+
 }
 
 

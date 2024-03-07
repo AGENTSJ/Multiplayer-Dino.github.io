@@ -12,8 +12,9 @@ function handleHost(){
 }
 function handleJoin(){
     game2 = new MultiPlayer();
+    
 }
-
-// function setremote(){
-//     game2.
-// }
+function setremote(){
+    game.connection.remoteConnection();
+    
+}
