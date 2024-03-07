@@ -78,7 +78,7 @@ class MultiPlayer{
             (resolved)=>{
                 let dinoObj = resolved[0];
                 dino = gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
-                inputController = new InputController(dino,gameFunctions,obstacleArr)
+                // inputController = new InputController(dino,gameFunctions,obstacleArr)
                 gameFunctions.player = dino;
                 requestAnimationFrame(GameLoop)
             }

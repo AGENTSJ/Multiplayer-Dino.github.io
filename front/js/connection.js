@@ -49,6 +49,7 @@ class WebRTC{
             ]
         };
         this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
+        this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this)
 
     }
     HostWebRTC() {
@@ -82,16 +83,11 @@ class WebRTC{
             .then(answer => this.peerConnection.setLocalDescription(answer))
             .catch(this.logError);
     }
-    handleDataChannelOpen() {
-        console.log('Data channel open');
-    }
-    handleDataChannelMessage(event) {
-        const message = JSON.parse(event.data);
-        console.log(message);
-    } 
-    sendMessage() {
-   
-        this.dataChannel.send(JSON.stringify({"hello":"world"}));
+    sendMessage(data) {
+        console.log(data);
+        console.log(this.dataChannel);
+        this.dataChannel.send(JSON.stringify(data));
+
     }
     logError(error) {
         console.error(error);
@@ -100,7 +96,15 @@ class WebRTC{
         this.dataChannel = event.channel;
         this.dataChannel.onopen = this.handleDataChannelOpen;
         this.dataChannel.onmessage = this.handleDataChannelMessage;
+        console.log("chanelopen",event.channel);
     }
+    handleDataChannelOpen() {
+        console.log('Data channel open');
+    }
+    handleDataChannelMessage(event) {
+        const message = JSON.parse(event.data);
+        console.log(message);
+    } 
 
 
 }
