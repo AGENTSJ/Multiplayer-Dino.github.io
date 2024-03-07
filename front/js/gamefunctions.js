@@ -1,7 +1,4 @@
 import SceneFunction from "./sceneFunction.js";
-import Connections from "./connection.js";
-
-let connection = new Connections();
 
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -9,8 +6,10 @@ function getRandomValue(min, max) {
 
 
 class GameFunctions{
-    constructor(canvas,context,obstacleSpeed){
+
+    constructor(canvas,context,obstacleSpeed,gameInstance){
         this.canvas = canvas;
+        this.gameInstance = gameInstance
         this.sceneFunction = new SceneFunction();
         this.context = context;
         this.obstacleSpeed=obstacleSpeed;
@@ -55,7 +54,11 @@ class GameFunctions{
 
         if(xp2>xobs1 && xp1<xobs2 && yp1<yobs2 && yp2>yobs1){
             this.state = false;//game state
-            connection.sendGameState(this.state); //con
+
+
+            console.log("game over send");
+            this.gameInstance.connection.sendGameState(); //con
+
         }
 
     }
@@ -74,7 +77,7 @@ class GameFunctions{
                     this.moveLeft(obst);
                     this.collisionWithPlayer(obst)
                 }
-                connection.sendObstacleSpawn(randomIdx);//con
+                this.gameInstance.connection.sendObstacleSpawn(randomIdx);//con
                 obsArr.push(
                     obst
                 );

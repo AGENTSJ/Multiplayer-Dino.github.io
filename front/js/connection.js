@@ -1,44 +1,3 @@
-class Connections{
-
-    constructor(){
-        this.session = false;
-        this.rtc = new WebRTC();
-    }
-    hostSession(){
-        this.session = true;
-        this.rtc.HostWebRTC();
-    }
-    networkListner(){
-
-    }
-    remoteConnection(){
-        let textar = document.getElementById("sdp");
-        let offerObj = JSON.parse(textar.value);
-        textar.value = "";
-        console.log(offerObj);
-        this.rtc.peerConnection.setRemoteDescription(offerObj);
-    }
-    joinSession(){
-        this.session = true;
-        let textar = document.getElementById("sdp")
-        let offerObj = JSON.parse(textar.value);
-        textar.value = "";
-        let offer = new RTCSessionDescription({type:"offer", sdp:offerObj.sdp});
-        this.rtc.joinWebRTC(offer);
-    }
-    sendPlayerState(){
-        // console.log("jumped");
-    }
-    sendObstacleSpawn(idx){
-        // console.log("spawn",idx);
-    }
-    sendGameState(){
-        // console.log("game over");
-    }
-}
-export default Connections;
-
-
 class WebRTC{
     constructor(){
         this.peerConnection;
@@ -68,8 +27,7 @@ class WebRTC{
         if (event.candidate) {
             let txtar = document.getElementById("sdp");
             txtar.value = JSON.stringify(this.peerConnection.localDescription)
-            // console.log('ICE candidate:\n', txtar.value);
-            // console.log(this.peerConnection);
+
         }
     }
     joinWebRTC(offer) {
@@ -84,7 +42,6 @@ class WebRTC{
             .catch(this.logError);
     }
     sendMessage(data) {
-        console.log(data);
         console.log(this.dataChannel);
         this.dataChannel.send(JSON.stringify(data));
 
@@ -96,7 +53,7 @@ class WebRTC{
         this.dataChannel = event.channel;
         this.dataChannel.onopen = this.handleDataChannelOpen;
         this.dataChannel.onmessage = this.handleDataChannelMessage;
-        console.log("chanelopen",event.channel);
+        // console.log("chanelopen",event.channel);
     }
     handleDataChannelOpen() {
         console.log('Data channel open');
@@ -108,6 +65,48 @@ class WebRTC{
 
 
 }
+
+class Connections{
+
+    constructor(){
+        this.session = false;
+        this.rtc = new WebRTC();
+    }
+    hostSession(){
+        this.session = true;
+        this.rtc.HostWebRTC();
+    }
+    networkListner(){
+
+    }
+    remoteConnection(){
+        let textar = document.getElementById("sdp");
+        let offerObj = JSON.parse(textar.value);
+        textar.value = "";
+
+        this.rtc.peerConnection.setRemoteDescription(offerObj);
+    }
+    joinSession(){
+        this.session = true;
+        let textar = document.getElementById("sdp")
+        let offerObj = JSON.parse(textar.value);
+        textar.value = "";
+        let offer = new RTCSessionDescription({type:"offer", sdp:offerObj.sdp});
+        this.rtc.joinWebRTC(offer);
+    }
+    sendPlayerState(){
+        // console.log("jumped");
+    }
+    sendObstacleSpawn(idx){
+        // console.log("spawn",idx);
+    }
+    sendGameState(){
+        this.rtc.sendMessage(JSON.stringify({"game":"over"}))
+    }
+}
+export default Connections;
+
+
 
 
 

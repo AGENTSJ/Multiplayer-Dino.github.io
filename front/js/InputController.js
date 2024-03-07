@@ -1,6 +1,6 @@
-import Connections from "./connection.js";
+// import Connections from "./connection.js";
 
-let connection = new Connections();
+// let connection = new Connections();
 
 class InputController{
     constructor(playerDino,gameFunctions,obstacleArr){
@@ -9,11 +9,11 @@ class InputController{
             if(event.code ==="Space" && playerDino.ground){
                 playerDino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
                 playerDino.stateFn = this.jumpfn;
-                connection.sendPlayerState();//con
+                // connection.sendPlayerState();//con
             }
         })
         gameFunctions.canvas.addEventListener('click', (event) => {
-            console.log("clicked",gameFunctions.state);
+            // console.log("clicked",gameFunctions.state);
             gameFunctions.state = true;
             gameFunctions.reset(obstacleArr);
         });
@@ -32,6 +32,19 @@ class InputController{
     }
 }
 class NetworkController{
+
+    constructor(playerDino,gameFunctions,obstacleArr){
+
+        gameFunctions.canvas.addEventListener('click', (event) => {
+            console.log("clicked",gameFunctions.state);
+            gameFunctions.state = true;
+            gameFunctions.reset(obstacleArr);
+        });
+    }
     
 }
-export default InputController;
+let controllers = {
+    InputController:InputController,
+    NetworkController:NetworkController
+}
+export default controllers;

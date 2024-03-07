@@ -7,20 +7,28 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <canvas id="gameScene"></canvas> -->
+
     <div id="games" class="gameCont">
 
     </div>
+
     <button onclick="handleHost()">host</button>
+
     <textarea name="" id="sdp" cols="30" rows="10"></textarea>
-    <button onclick="copyToClipboard()">Copy to clipboard</button> <!-- New button -->
+
+    <button onclick="copyToClipboard()">Copy to clipboard</button> 
+    
     <button onclick="handleJoin()">join</button>
+
     <button onclick="setremote()">setremote</button>
-    <!-- <input type="text" name="" id="tester"> -->
-    <!-- <button onclick="sendTest()">Send</button> -->
+
+    <input type="text" name="" id="tester">
+
+    <button onclick="sendTest()">Send</button>
 
 </body>
 <script type="module" src="dino.js"></script>
+
 <script>
     function copyToClipboard() {
         var copyText = document.getElementById("sdp");
