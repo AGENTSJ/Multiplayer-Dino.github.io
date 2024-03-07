@@ -1,5 +1,7 @@
+import controllers from "./InputController.js";
+const {InputController,NetworkController} = controllers;
 class WebRTC{
-    constructor(){
+    constructor(gameInstance){
         this.peerConnection;
         this.dataChannel;
         this.configuration = {
@@ -7,9 +9,11 @@ class WebRTC{
                 { urls: 'stun:stun.l.google.com:19302' }
             ]
         };
+        this.NetworkController = new NetworkController()
+        this.gameInstance = gameInstance;
         this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
-        this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this)
-
+        this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this);
+        this.handleDataChannelMessage = this.handleDataChannelMessage.bind(this);
     }
     HostWebRTC() {
         this.peerConnection = new RTCPeerConnection(this.configuration);
@@ -42,7 +46,7 @@ class WebRTC{
             .catch(this.logError);
     }
     sendMessage(data) {
-        console.log(this.dataChannel);
+        // console.log(this.dataChannel);
         this.dataChannel.send(JSON.stringify(data));
 
     }
@@ -53,14 +57,26 @@ class WebRTC{
         this.dataChannel = event.channel;
         this.dataChannel.onopen = this.handleDataChannelOpen;
         this.dataChannel.onmessage = this.handleDataChannelMessage;
-        // console.log("chanelopen",event.channel);
     }
     handleDataChannelOpen() {
         console.log('Data channel open');
     }
     handleDataChannelMessage(event) {
-        const message = JSON.parse(event.data);
-        console.log(message);
+        let message = JSON.parse(event.data);
+        message = JSON.parse(message)
+        // console.log(typeof message);
+        // console.log(message);
+
+        switch(message.event){
+            case "gameOver":
+                // this.gameInstance.obstacleArr
+                console.log("gameover from connection");
+                break;
+            case "obstSpawn":
+                // console.log(message.data);
+                this.NetworkController.spawnObstacles(this.gameInstance,message.data)
+                break;
+        }
     } 
 
 
@@ -68,22 +84,18 @@ class WebRTC{
 
 class Connections{
 
-    constructor(){
+    constructor(gameInstance){
         this.session = false;
-        this.rtc = new WebRTC();
+        this.rtc = new WebRTC(gameInstance);
     }
     hostSession(){
         this.session = true;
         this.rtc.HostWebRTC();
     }
-    networkListner(){
-
-    }
     remoteConnection(){
         let textar = document.getElementById("sdp");
         let offerObj = JSON.parse(textar.value);
         textar.value = "";
-
         this.rtc.peerConnection.setRemoteDescription(offerObj);
     }
     joinSession(){
@@ -99,9 +111,10 @@ class Connections{
     }
     sendObstacleSpawn(idx){
         // console.log("spawn",idx);
+        this.rtc.sendMessage(JSON.stringify({event:"obstSpawn",data:idx}))
     }
     sendGameState(){
-        this.rtc.sendMessage(JSON.stringify({"game":"over"}))
+        this.rtc.sendMessage(JSON.stringify({event:"gameOver"}))
     }
 }
 export default Connections;

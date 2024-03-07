@@ -1,6 +1,4 @@
-// import Connections from "./connection.js";
 
-// let connection = new Connections();
 
 class InputController{
     constructor(playerDino,gameFunctions,obstacleArr){
@@ -33,13 +31,22 @@ class InputController{
 }
 class NetworkController{
 
-    constructor(playerDino,gameFunctions,obstacleArr){
+    spawnObstacles(gameInstance,idx){
+        console.log(idx);
+        let obstacleImgObj = gameInstance.obstacleAssetArr[idx];
 
-        gameFunctions.canvas.addEventListener('click', (event) => {
-            console.log("clicked",gameFunctions.state);
-            gameFunctions.state = true;
-            gameFunctions.reset(obstacleArr);
-        });
+        let obstacleImg = obstacleImgObj.img;
+
+        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+        
+        obst.stateFn = ()=>{
+            gameInstance.gameFunctions.moveLeft(obst);
+            gameInstance.gameFunctions.collisionWithPlayer(obst)
+        }
+        gameInstance.obstacleArr.push(obst);
+        if(gameInstance.obstacleArr[0].x<0){
+            gameInstance.obstacleArr.shift();
+        }
     }
     
 }

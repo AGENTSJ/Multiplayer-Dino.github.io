@@ -10,7 +10,7 @@ class GameInstance{
     //1 online
     constructor(mode){
 
-        this.connection = new Connections();
+        this.connection = new Connections(this);
         this.mode = mode;
         this.inputController;
         this.sceneFunction = new SceneFunction();
@@ -20,35 +20,50 @@ class GameInstance{
         this.dino;
         this.obstacleAssetArr=[];
         this.GameLoop = this.GameLoop.bind(this)
-        
-        this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
-        this.gameFunctions.spawnObstacles(this.obstacleArr,this.obstacleAssetArr);
 
-        this.sceneFunction.loadImages(assets.playerPath).then(
-            (resolved)=>{
-                let dinoObj = resolved[0];
-                this.dino = this.gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,this.gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
-                if(this.mode===0){//offline
+        if(mode===0){
+
+            this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
+            this.gameFunctions.spawnObstacles(this.obstacleArr,this.obstacleAssetArr);
+    
+            this.sceneFunction.loadImages(assets.playerPath).then(
+                (resolved)=>{
+                    let dinoObj = resolved[0];
+                    this.dino = this.gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,this.gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
+            
 
                     this.inputController = new InputController(this.dino,this.gameFunctions,this.obstacleArr);
-                }else{//remote player
-                    this.inputController = new NetworkController(this.dino,this.gameFunctions,this.obstacleArr)
+                   
+                    this.gameFunctions.player = this.dino;
+                    requestAnimationFrame(this.GameLoop)
                 }
-                this.gameFunctions.player = this.dino;
-                requestAnimationFrame(this.GameLoop)
-            }
-        )
+            )
+        }else{
+            this.gameFunctions.state = true;
+            this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
+            this.sceneFunction.loadImages(assets.playerPath).then(
+                (resolved)=>{
+                    let dinoObj = resolved[0];
+                    this.dino = this.gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,this.gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);               
+                    this.gameFunctions.player = this.dino;
+                    requestAnimationFrame(this.GameLoop)
+                }
+            )
+
+
+            
+        }
 
         
     } 
     GameLoop(){
-
+        
         if(this.gameFunctions.state){
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
         
             this.sceneFunction.addObject_toScene(this.dino,this.gameScene.context,this.gameScene.canvas);
-        
+            if(this.mode===1){console.log(this.obstacleArr.length);}
             this.gameFunctions.addAllObstacles(this.obstacleArr);
             
         }
