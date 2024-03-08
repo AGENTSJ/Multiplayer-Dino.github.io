@@ -42,15 +42,15 @@ let playerPath = [
 ]
 
 
-let obstMap = new Map()
-obstImagePaths.forEach((e,idx)=>{
-    obstMap.set(idx,e)
-})
+// let obstMap = new Map()
+// obstImagePaths.forEach((e,idx)=>{
+//     obstMap.set(idx,e)
+// })
 
 let assets = {
     obstImagePaths:obstImagePaths,
-    playerPath:playerPath,
-    map:obstMap
+    playerPath:playerPath
+    // map:obstMap
 }
     export default assets;
 

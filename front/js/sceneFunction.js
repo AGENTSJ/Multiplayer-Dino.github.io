@@ -1,5 +1,8 @@
 class SceneFunction{
+    constructor(){
 
+    }
+    
     createScene(width,height){
         let gameCanvas = document.createElement("canvas");
         gameCanvas.width = width;

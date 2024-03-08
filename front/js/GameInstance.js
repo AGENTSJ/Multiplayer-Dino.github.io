@@ -3,6 +3,7 @@ import GameFunctions from "./gamefunctions.js";
 import SceneFunction from "./sceneFunction.js";
 import assets from "./assets.js";
 import Connections from "./connection.js";
+
 let {InputController,NetworkController} = controllers;
 
 class GameInstance{
@@ -30,10 +31,7 @@ class GameInstance{
                 (resolved)=>{
                     let dinoObj = resolved[0];
                     this.dino = this.gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,this.gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
-            
-
-                    this.inputController = new InputController(this.dino,this.gameFunctions,this.obstacleArr);
-                   
+                    this.inputController = new InputController(this);
                     this.gameFunctions.player = this.dino;
                     requestAnimationFrame(this.GameLoop)
                 }
@@ -57,7 +55,7 @@ class GameInstance{
         
     } 
     GameLoop(){
-        
+        // console.log(this.obstacleArr.length);
         if(this.gameFunctions.state){
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);

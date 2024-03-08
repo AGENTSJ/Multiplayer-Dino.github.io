@@ -1,4 +1,4 @@
-import SceneFunction from "./sceneFunction.js";
+// import SceneFunction from "./sceneFunction.js";
 
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -8,9 +8,9 @@ function getRandomValue(min, max) {
 class GameFunctions{
 
     constructor(canvas,context,obstacleSpeed,gameInstance){
-        this.canvas = canvas;
         this.gameInstance = gameInstance
-        this.sceneFunction = new SceneFunction();
+        this.canvas = canvas;
+        this.sceneFunction = this.gameInstance.sceneFunction;
         this.context = context;
         this.obstacleSpeed=obstacleSpeed;
         this.spawnRate = 1000;//spawn 1 obst per 1 second
@@ -56,7 +56,7 @@ class GameFunctions{
             this.state = false;//game state
 
 
-            console.log("game over send");
+            
             this.gameInstance.connection.sendGameState(); //con
 
         }
@@ -90,14 +90,15 @@ class GameFunctions{
         
     }
     addAllObstacles(obsArr){
-        for(let i =0;i<obsArr.length;i++){
+        
+        for(let i =0;i<this.gameInstance.obstacleArr.length;i++){
             
-            this.sceneFunction.addObject_toScene(obsArr[i],this.context,this.canvas);
-            // this.moveLeft(obsArr[i]);
+            this.sceneFunction.addObject_toScene(this.gameInstance.obstacleArr[i],this.context,this.canvas);
+
         }
     }
     reset(obsArr){
-        obsArr.length=0;
+        this.gameInstance.obstacleArr.length=0;
     }
 
 }

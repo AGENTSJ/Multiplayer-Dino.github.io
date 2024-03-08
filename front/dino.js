@@ -11,21 +11,25 @@ window.copyToClipboard = copyToClipboard;
 
 game = new GameInstance(0);
 
+
+
+
 function handleHost(){
     game.connection.hostSession();
-    // game.mode=1;
+    game.mode=1;
 }
 function handleJoin(){
     game2 = new GameInstance(1);
     game2.connection.joinSession();
-    game.connection.rtc = game2.connection.rtc;
-    
+    game2.gameFunctions.state = true;
+    game.mode=1;
+
 }
 function setremote(){
     game.connection.remoteConnection();
     game2 = new GameInstance(1)
-    game2.connection.rtc = game.connection.rtc;
-    // game.mode=1;
+    game2.connection.rtc.dataChannel = game.connection.rtc.dataChannel;
+    game.mode=1;
     
 }
 function copyToClipboard() {

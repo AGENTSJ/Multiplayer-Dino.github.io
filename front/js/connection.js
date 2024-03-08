@@ -10,8 +10,8 @@ class WebRTC{
                 { urls: 'stun:stun.l.google.com:19302' }
             ]
         };
-        this.NetworkController = new NetworkController()
         this.gameInstance = gameInstance;
+        this.NetworkController = new NetworkController(this.gameInstance)
         this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
         this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this);
         this.handleDataChannelMessage = this.handleDataChannelMessage.bind(this);
@@ -71,11 +71,11 @@ class WebRTC{
                 this.gameInstance.gameFunctions.state = false;
                 break;
             case "obstSpawn":
-                // console.log(message.data);
-                this.NetworkController.spawnObstacles(this.gameInstance,message.data)
+
+                this.NetworkController.spawnObstacle(message.data)
                 break;
             case "jump":
-                console.log("jump inside rtc");
+
                 this.NetworkController.makeJump(this.gameInstance)
         }
     } 
@@ -86,11 +86,11 @@ class WebRTC{
 class Connections{
 
     constructor(gameInstance){
-        this.session = false;
-        this.rtc = new WebRTC(gameInstance);
+
+        this.gameInstance = gameInstance;
+        this.rtc = new WebRTC(this.gameInstance);
     }
     hostSession(){
-        this.session = true;
         this.rtc.HostWebRTC();
     }
     remoteConnection(){
@@ -100,7 +100,6 @@ class Connections{
         this.rtc.peerConnection.setRemoteDescription(offerObj);
     }
     joinSession(){
-        this.session = true;
         let textar = document.getElementById("sdp")
         let offerObj = JSON.parse(textar.value);
         textar.value = "";
@@ -108,15 +107,25 @@ class Connections{
         this.rtc.joinWebRTC(offer);
     }
     sendPlayerState(){
-        // console.log("jumped");
-        this.rtc.sendMessage({event:"jump"})
+
+        if(this.gameInstance.mode===1){
+
+            this.rtc.sendMessage({event:"jump"})
+        }
     }
     sendObstacleSpawn(idx){
-        // console.log("spawn",idx);
-        this.rtc.sendMessage({event:"obstSpawn",data:idx})
+        
+        if(this.gameInstance.mode===1){
+
+            this.rtc.sendMessage({event:"obstSpawn",data:idx})
+        }
+
     }
     sendGameState(){
-        this.rtc.sendMessage({event:"gameOver"})
+        if(this.gameInstance.mode===1){
+            console.log("game over send");
+            this.rtc.sendMessage({event:"gameOver"})
+        }
     }
 }
 export default Connections;
