@@ -7,7 +7,7 @@ let game2;
 window.handleHost = handleHost;
 window.handleJoin = handleJoin;
 window.setremote = setremote;
-window.sendTest = sendTest;
+window.copyToClipboard = copyToClipboard;
 
 game = new GameInstance(0);
 
@@ -28,6 +28,9 @@ function setremote(){
     // game.mode=1;
     
 }
-function sendTest(){
-    game.connection.rtc.sendMessage({"hello":"world"})
+function copyToClipboard() {
+    var copyText = document.getElementById("sdp");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
 }

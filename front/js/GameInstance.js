@@ -21,7 +21,7 @@ class GameInstance{
         this.obstacleAssetArr=[];
         this.GameLoop = this.GameLoop.bind(this)
 
-        if(mode===0){
+        if(mode===0){//main player(offline)
 
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
             this.gameFunctions.spawnObstacles(this.obstacleArr,this.obstacleAssetArr);
@@ -38,7 +38,7 @@ class GameInstance{
                     requestAnimationFrame(this.GameLoop)
                 }
             )
-        }else{
+        }else{//remote player (online)
             this.gameFunctions.state = true;
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
             this.sceneFunction.loadImages(assets.playerPath).then(
@@ -63,7 +63,7 @@ class GameInstance{
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
         
             this.sceneFunction.addObject_toScene(this.dino,this.gameScene.context,this.gameScene.canvas);
-            if(this.mode===1){console.log(this.obstacleArr.length);}
+            
             this.gameFunctions.addAllObstacles(this.obstacleArr);
             
         }

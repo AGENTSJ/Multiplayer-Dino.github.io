@@ -1,5 +1,6 @@
 import controllers from "./InputController.js";
 const {InputController,NetworkController} = controllers;
+
 class WebRTC{
     constructor(gameInstance){
         this.peerConnection;
@@ -63,19 +64,19 @@ class WebRTC{
     }
     handleDataChannelMessage(event) {
         let message = JSON.parse(event.data);
-        message = JSON.parse(message)
-        // console.log(typeof message);
-        // console.log(message);
 
         switch(message.event){
             case "gameOver":
-                // this.gameInstance.obstacleArr
                 console.log("gameover from connection");
+                this.gameInstance.gameFunctions.state = false;
                 break;
             case "obstSpawn":
                 // console.log(message.data);
                 this.NetworkController.spawnObstacles(this.gameInstance,message.data)
                 break;
+            case "jump":
+                console.log("jump inside rtc");
+                this.NetworkController.makeJump(this.gameInstance)
         }
     } 
 
@@ -108,13 +109,14 @@ class Connections{
     }
     sendPlayerState(){
         // console.log("jumped");
+        this.rtc.sendMessage({event:"jump"})
     }
     sendObstacleSpawn(idx){
         // console.log("spawn",idx);
-        this.rtc.sendMessage(JSON.stringify({event:"obstSpawn",data:idx}))
+        this.rtc.sendMessage({event:"obstSpawn",data:idx})
     }
     sendGameState(){
-        this.rtc.sendMessage(JSON.stringify({event:"gameOver"}))
+        this.rtc.sendMessage({event:"gameOver"})
     }
 }
 export default Connections;

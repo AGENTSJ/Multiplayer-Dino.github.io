@@ -5,13 +5,13 @@ class InputController{
 
         document.addEventListener("keydown",(event)=>{
             if(event.code ==="Space" && playerDino.ground){
+                gameFunctions.gameInstance.connection.sendPlayerState();//multiplayer
                 playerDino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
                 playerDino.stateFn = this.jumpfn;
-                // connection.sendPlayerState();//con
+
             }
         })
         gameFunctions.canvas.addEventListener('click', (event) => {
-            // console.log("clicked",gameFunctions.state);
             gameFunctions.state = true;
             gameFunctions.reset(obstacleArr);
         });
@@ -32,7 +32,7 @@ class InputController{
 class NetworkController{
 
     spawnObstacles(gameInstance,idx){
-        console.log(idx);
+        // console.log(idx);
         let obstacleImgObj = gameInstance.obstacleAssetArr[idx];
 
         let obstacleImg = obstacleImgObj.img;
@@ -47,6 +47,22 @@ class NetworkController{
         if(gameInstance.obstacleArr[0].x<0){
             gameInstance.obstacleArr.shift();
         }
+    }
+    makeJump(gameInstance){
+        gameInstance.dino.state = true;
+        gameInstance.dino.stateFn = this.jumpfn
+    }
+    jumpfn(obj){
+        if(obj.state!==undefined && obj.state===true){
+                
+            if(obj.y<=0){
+                obj.state=false;
+            }else{
+                obj.ground = false;
+                obj.y-=15;
+            }
+        }
+        
     }
     
 }

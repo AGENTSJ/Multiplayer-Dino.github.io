@@ -4,4 +4,14 @@
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+    padding: 20px;
+    background-color: antiquewhite;
+}
+
+.buttonCont{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
 }
