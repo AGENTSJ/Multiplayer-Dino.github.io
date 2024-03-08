@@ -1,7 +1,8 @@
-import controllers from "./InputController.js";
-const {InputController,NetworkController} = controllers;
+// import controllers from "./InputController.js";
+// const {InputController,NetworkController} = controllers;
 
 class WebRTC{
+
     constructor(gameInstance){
         this.peerConnection;
         this.dataChannel;
@@ -11,7 +12,7 @@ class WebRTC{
             ]
         };
         this.gameInstance = gameInstance;
-        this.NetworkController = new NetworkController(this.gameInstance)
+        // this.NetworkController = new NetworkController(this.gameInstance)
         this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
         this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this);
         this.handleDataChannelMessage = this.handleDataChannelMessage.bind(this);
@@ -35,6 +36,7 @@ class WebRTC{
 
         }
     }
+
     joinWebRTC(offer) {
         this.peerConnection = new RTCPeerConnection(this.configuration);
     
@@ -71,12 +73,14 @@ class WebRTC{
                 this.gameInstance.gameFunctions.state = false;
                 break;
             case "obstSpawn":
+                let obstevent = new CustomEvent('obstSpawn', {detail:{ idx: message.data }});
+                window.dispatchEvent(obstevent);
 
-                this.NetworkController.spawnObstacle(message.data)
                 break;
             case "jump":
-
-                this.NetworkController.makeJump(this.gameInstance)
+                // this.NetworkController.makeJump(this.gameInstance)
+                let jumpevnt = new CustomEvent('jump');
+                window.dispatchEvent(jumpevnt);
         }
     } 
 

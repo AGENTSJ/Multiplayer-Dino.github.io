@@ -73,6 +73,7 @@ class NetworkController{
     }
     
 }
+
 let controllers = {
     InputController:InputController,
     NetworkController:NetworkController
