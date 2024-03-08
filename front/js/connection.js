@@ -1,9 +1,11 @@
-// import controllers from "./InputController.js";
-// const {InputController,NetworkController} = controllers;
+import controllers from "./InputController.js";
+const {InputController,NetworkController} = controllers;
+const NetController = new NetworkController();
 
 class WebRTC{
 
-    constructor(gameInstance){
+    constructor(RemIns){
+        this.RemIns = RemIns;
         this.peerConnection;
         this.dataChannel;
         this.configuration = {
@@ -11,16 +13,14 @@ class WebRTC{
                 { urls: 'stun:stun.l.google.com:19302' }
             ]
         };
-        this.gameInstance = gameInstance;
-        // this.NetworkController = new NetworkController(this.gameInstance)
         this.handleICECandidateEvent = this.handleICECandidateEvent.bind(this);
-        this.handleDataChannelEvent = this.handleDataChannelEvent.bind(this);
+        this.reciveDataChannel = this.reciveDataChannel.bind(this);
         this.handleDataChannelMessage = this.handleDataChannelMessage.bind(this);
     }
+
     HostWebRTC() {
         this.peerConnection = new RTCPeerConnection(this.configuration);
         this.dataChannel = this.peerConnection.createDataChannel('jsonChannel');
-    
         this.dataChannel.onopen = this.handleDataChannelOpen;
         this.dataChannel.onmessage = this.handleDataChannelMessage;
     
@@ -29,6 +29,7 @@ class WebRTC{
             .then(offer => this.peerConnection.setLocalDescription(offer))
             .catch(this.logError);
     }
+
     handleICECandidateEvent(event) {
         if (event.candidate) {
             let txtar = document.getElementById("sdp");
@@ -40,7 +41,7 @@ class WebRTC{
     joinWebRTC(offer) {
         this.peerConnection = new RTCPeerConnection(this.configuration);
     
-        this.peerConnection.ondatachannel = this.handleDataChannelEvent;
+        this.peerConnection.ondatachannel = this.reciveDataChannel;
         this.peerConnection.onicecandidate = this.handleICECandidateEvent;
     
         this.peerConnection.setRemoteDescription(offer)
@@ -56,7 +57,7 @@ class WebRTC{
     logError(error) {
         console.error(error);
     }
-    handleDataChannelEvent(event) {
+    reciveDataChannel(event) {
         this.dataChannel = event.channel;
         this.dataChannel.onopen = this.handleDataChannelOpen;
         this.dataChannel.onmessage = this.handleDataChannelMessage;
@@ -66,22 +67,20 @@ class WebRTC{
     }
     handleDataChannelMessage(event) {
         let message = JSON.parse(event.data);
-
+        let gameInstance = this.RemIns[0]
+        // console.log(gameInstance);
         switch(message.event){
-            case "gameOver":
-                console.log("gameover from connection");
-                this.gameInstance.gameFunctions.state = false;
-                break;
             case "obstSpawn":
-                let obstevent = new CustomEvent('obstSpawn', {detail:{ idx: message.data }});
-                window.dispatchEvent(obstevent);
-
+                NetController.spawnObstacle(gameInstance,message.data);
+                break;
+            case "gameOver":
+                NetController.gameOver(gameInstance);
                 break;
             case "jump":
-                // this.NetworkController.makeJump(this.gameInstance)
-                let jumpevnt = new CustomEvent('jump');
-                window.dispatchEvent(jumpevnt);
+                NetController.makeJump(gameInstance);
+                break;
         }
+        // console.log(message);
     } 
 
 
@@ -89,10 +88,9 @@ class WebRTC{
 
 class Connections{
 
-    constructor(gameInstance){
-
-        this.gameInstance = gameInstance;
-        this.rtc = new WebRTC(this.gameInstance);
+    constructor(RemIns){
+        this.RemIns = RemIns;
+        this.rtc = new WebRTC(this.RemIns);
     }
     hostSession(){
         this.rtc.HostWebRTC();
@@ -110,26 +108,15 @@ class Connections{
         let offer = new RTCSessionDescription({type:"offer", sdp:offerObj.sdp});
         this.rtc.joinWebRTC(offer);
     }
-    sendPlayerState(){
-
-        if(this.gameInstance.mode===1){
-
-            this.rtc.sendMessage({event:"jump"})
-        }
+    sendJump(){
+        this.rtc.sendMessage({"event":"jump"})
     }
     sendObstacleSpawn(idx){
-        
-        if(this.gameInstance.mode===1){
-
-            this.rtc.sendMessage({event:"obstSpawn",data:idx})
-        }
-
+        // console.log(idx);
+        this.rtc.sendMessage({"event":"obstSpawn","data":idx})
     }
     sendGameState(){
-        if(this.gameInstance.mode===1){
-            console.log("game over send");
-            this.rtc.sendMessage({event:"gameOver"})
-        }
+        this.rtc.sendMessage({"event":"gameOver"})
     }
 }
 export default Connections;

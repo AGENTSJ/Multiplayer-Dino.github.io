@@ -2,18 +2,19 @@ import controllers from "./InputController.js";
 import GameFunctions from "./gamefunctions.js";
 import SceneFunction from "./sceneFunction.js";
 import assets from "./assets.js";
-import Connections from "./connection.js";
+
 
 let {InputController,NetworkController} = controllers;
 
 class GameInstance{
     //0 offline 
     //1 online
-    constructor(mode){
+    constructor(mode,name){
 
-        this.connection = new Connections(this);
+        this.name = name;
         this.mode = mode;
         this.inputController;
+        this.connection;
         this.sceneFunction = new SceneFunction();
         this.gameScene = this.sceneFunction.createScene(1080,200);
         this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,4,this);

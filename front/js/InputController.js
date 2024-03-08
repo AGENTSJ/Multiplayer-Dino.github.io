@@ -6,10 +6,11 @@ class InputController{
 
         document.addEventListener("keydown",(event)=>{
             if(event.code ==="Space" && this.gameInstance.dino.ground){
-                this.gameInstance.connection.sendPlayerState();//multiplayer
                 this.gameInstance.dino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
                 this.gameInstance.dino.stateFn = this.jumpfn;
-
+                if(this.gameInstance.mode===1){
+                    this.gameInstance.connection.sendJump();
+                }
             }
         })
 
@@ -35,29 +36,32 @@ class InputController{
 
 class NetworkController{
     
-    constructor(gameInstance){
-        this.gameInstance = gameInstance;
+    constructor(){
+        
     }
-    spawnObstacle(idx){
+    spawnObstacle(gameInstance,idx){
 
-        let obstacleImgObj = this.gameInstance.obstacleAssetArr[idx];
+        let obstacleImgObj = gameInstance.obstacleAssetArr[idx];
 
         let obstacleImg = obstacleImgObj.img;
 
-        let obst = this.gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
         obst.stateFn = ()=>{
-            this.gameInstance.gameFunctions.moveLeft(obst);
-            this.gameInstance.gameFunctions.collisionWithPlayer(obst)
+            gameInstance.gameFunctions.moveLeft(obst);
+            gameInstance.gameFunctions.collisionWithPlayer(obst)
         }
 
-        this.gameInstance.obstacleArr.push(obst);
-        if(this.gameInstance.obstacleArr[0].x<0){
-            this.gameInstance.obstacleArr.shift();
+        gameInstance.obstacleArr.push(obst);
+        if(gameInstance.obstacleArr[0].x<0){
+            gameInstance.obstacleArr.shift();
         }
     }
+    gameOver(gameInstance){
+        gameInstance.gameFunctions.state = false;
+    }
     makeJump(gameInstance){
-        this.gameInstance.dino.state = true;
-        this.gameInstance.dino.stateFn = this.jumpfn
+        gameInstance.dino.state = true;
+        gameInstance.dino.stateFn = this.jumpfn
     }
     jumpfn(obj){
         if(obj.state!==undefined && obj.state===true){

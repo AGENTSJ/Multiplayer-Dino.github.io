@@ -1,5 +1,3 @@
-// import SceneFunction from "./sceneFunction.js";
-
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -8,6 +6,7 @@ function getRandomValue(min, max) {
 class GameFunctions{
 
     constructor(canvas,context,obstacleSpeed,gameInstance){
+        
         this.gameInstance = gameInstance
         this.canvas = canvas;
         this.sceneFunction = this.gameInstance.sceneFunction;
@@ -34,11 +33,13 @@ class GameFunctions{
             }
         )
     }
+
     moveLeft(obj){
         if(obj!==undefined){
             obj.x-=this.obstacleSpeed;
         }
     }
+
     collisionWithPlayer(obj){
         // verbose fn 
         let slack = 20;
@@ -54,20 +55,23 @@ class GameFunctions{
 
         if(xp2>xobs1 && xp1<xobs2 && yp1<yobs2 && yp2>yobs1){
             this.state = false;//game state
-
-
-            
-            this.gameInstance.connection.sendGameState(); //con
-
+            if(this.gameInstance.mode===1){
+                this.gameInstance.connection.sendGameState()
+            }
         }
 
     }
+
     spawnObstacles(obsArr,obstacle_Asset_Arr){
         
         setInterval(()=>{
     
             if(obstacle_Asset_Arr!==undefined && this.state){
                 let randomIdx  = getRandomValue(0,obstacle_Asset_Arr.length-1);
+                
+                if(this.gameInstance.mode===1){
+                    this.gameInstance.connection.sendObstacleSpawn(randomIdx);
+                }
                 let obstacleImgObj = obstacle_Asset_Arr[randomIdx];
 
                 let obstacleImg = obstacleImgObj.img;
@@ -77,7 +81,6 @@ class GameFunctions{
                     this.moveLeft(obst);
                     this.collisionWithPlayer(obst)
                 }
-                this.gameInstance.connection.sendObstacleSpawn(randomIdx);//con
                 obsArr.push(
                     obst
                 );
@@ -89,6 +92,7 @@ class GameFunctions{
         },this.spawnRate)
         
     }
+    
     addAllObstacles(obsArr){
         
         for(let i =0;i<this.gameInstance.obstacleArr.length;i++){
