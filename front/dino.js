@@ -9,6 +9,7 @@ window.handleHost = handleHost;
 window.handleJoin = handleJoin;
 window.setremote = setremote;
 window.copyToClipboard = copyToClipboard;
+window.reset = reset;
 
 const connection = new Connections(remoteInstances);
 
@@ -41,4 +42,8 @@ function copyToClipboard() {
     copyText.select();
     copyText.setSelectionRange(0, 99999);
     document.execCommand("copy");
+}
+function reset(event){
+    game.gameFunctions.state = true;
+    game.gameFunctions.reset(game.obstacleArr);
 }

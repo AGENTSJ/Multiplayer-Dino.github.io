@@ -5,19 +5,22 @@ class InputController{
         this.gameInstance = gameInstance;
 
         document.addEventListener("keydown",(event)=>{
-            if(event.code ==="Space" && this.gameInstance.dino.ground){
-                this.gameInstance.dino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
-                this.gameInstance.dino.stateFn = this.jumpfn;
-                if(this.gameInstance.mode===1){
-                    this.gameInstance.connection.sendJump();
-                }
+            if(event.code ==="Space" ){
+                this.makeJump();
             }
         })
 
-        this.gameInstance.gameFunctions.canvas.addEventListener('click', (event) => {
-            this.gameInstance.gameFunctions.state = true;
-            this.gameInstance.gameFunctions.reset(this.gameInstance.obstacleArr);
-        });
+        this.gameInstance.gameFunctions.canvas.addEventListener('click', this.makeJump);
+    }
+
+    makeJump = ()=>{
+        if(this.gameInstance.dino.ground){
+            this.gameInstance.dino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
+            this.gameInstance.dino.stateFn = this.jumpfn;
+            if(this.gameInstance.mode===1){
+                this.gameInstance.connection.sendJump();
+            }
+        }
     }
 
     jumpfn(obj){
