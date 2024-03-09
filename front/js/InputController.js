@@ -53,7 +53,7 @@ class NetworkController{
 
         let obstacleImg = obstacleImgObj.img;
 
-        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,window.innerWidth,true,true,false,true,undefined);
         obst.stateFn = ()=>{
             gameInstance.gameFunctions.moveLeft(obst);
             gameInstance.gameFunctions.collisionWithPlayer(obst)
