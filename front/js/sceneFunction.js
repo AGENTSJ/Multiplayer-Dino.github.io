@@ -5,8 +5,11 @@ class SceneFunction{
     
     createScene(width,height){
         let gameCanvas = document.createElement("canvas");
-        gameCanvas.width = width;
-        gameCanvas.height = height;
+        // gameCanvas.width = width;
+        gameCanvas.width = window.innerWidth;
+
+        // gameCanvas.height = height;
+        gameCanvas.height = window.innerWidth*0.2;
         let context = gameCanvas.getContext('2d');
         let gameCont = document.getElementById("games")
         gameCont.appendChild(gameCanvas)
@@ -62,6 +65,19 @@ class SceneFunction{
             }
         }
     }
+    // addObject_toScene(obj,context,canvas){
+    //     if (obj!==undefined){
+    
+    //         context.drawImage(obj.img, obj.x, obj.y, obj.wp, obj.hp);
+    //         if(obj.gravity){
+    //             this.addGravity(obj,canvas);
+    //         }
+
+    //         if(obj.state!==undefined && obj.state){
+    //             obj.stateFn(obj);
+    //         }
+    //     }
+    // }
 
 }
 

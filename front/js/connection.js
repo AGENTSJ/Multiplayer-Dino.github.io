@@ -4,8 +4,8 @@ const NetController = new NetworkController();
 
 class WebRTC{
 
-    constructor(RemIns){
-        this.RemIns = RemIns;
+    constructor(RemoteInstances){
+        this.RemoteInstances = RemoteInstances;
         this.peerConnection;
         this.dataChannel;
         this.configuration = {
@@ -50,9 +50,7 @@ class WebRTC{
             .catch(this.logError);
     }
     sendMessage(data) {
-        // console.log(this.dataChannel);
         this.dataChannel.send(JSON.stringify(data));
-
     }
     logError(error) {
         console.error(error);
@@ -67,8 +65,9 @@ class WebRTC{
     }
     handleDataChannelMessage(event) {
         let message = JSON.parse(event.data);
-        let gameInstance = this.RemIns[0]
-        // console.log(gameInstance);
+
+        let gameInstance = this.RemoteInstances[0]
+        
         switch(message.event){
             case "obstSpawn":
                 NetController.spawnObstacle(gameInstance,message.data);
@@ -80,7 +79,7 @@ class WebRTC{
                 NetController.makeJump(gameInstance);
                 break;
         }
-        // console.log(message);
+        
     } 
 
 
@@ -88,9 +87,9 @@ class WebRTC{
 
 class Connections{
 
-    constructor(RemIns){
-        this.RemIns = RemIns;
-        this.rtc = new WebRTC(this.RemIns);
+    constructor(RemoteInstances){
+        this.RemoteInstances = RemoteInstances;
+        this.rtc = new WebRTC(this.RemoteInstances);
     }
     hostSession(){
         this.rtc.HostWebRTC();
@@ -112,7 +111,6 @@ class Connections{
         this.rtc.sendMessage({"event":"jump"})
     }
     sendObstacleSpawn(idx){
-        // console.log(idx);
         this.rtc.sendMessage({"event":"obstSpawn","data":idx})
     }
     sendGameState(){
