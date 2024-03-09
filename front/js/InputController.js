@@ -24,13 +24,16 @@ class InputController{
     }
 
     jumpfn(obj){
+        const jumpRatioFactor = 0.01388;
+        const jumpfac = jumpRatioFactor*window.innerWidth;
+        const topLimitFactor = 0.004629;
         if(obj.state!==undefined && obj.state===true){
                 
-            if(obj.y<=0){
+            if(obj.y<=topLimitFactor*window.innerWidth){
                 obj.state=false;
             }else{
                 obj.ground = false;
-                obj.y-=15;
+                obj.y-=jumpfac;
             }
         }
         

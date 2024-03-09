@@ -41,7 +41,9 @@ class SceneFunction{
     }
 
     addGravity(gameObject,canvas){
-        let gr = 6;
+        const gravityRatioFactor = 0.00555;
+        // let gr = 6;
+        let gr = gravityRatioFactor*window.innerWidth;
         if(gameObject.y <= canvas.height-gameObject.height-5){
             gameObject.y+=gr;
         }else{
