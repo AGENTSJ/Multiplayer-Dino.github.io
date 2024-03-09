@@ -16,8 +16,8 @@ class GameInstance{
         this.inputController;
         this.connection;
         this.sceneFunction = new SceneFunction();
-        this.gameScene = this.sceneFunction.createScene(1080,200);
-        this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,4,this);
+        this.gameScene = this.sceneFunction.createScene(window.innerWidth,window.innerWidth*0.185);
+        this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,this.speedController(),this);
         this.obstacleArr = [];
         this.dino;
         this.obstacleAssetArr=[];
@@ -67,6 +67,10 @@ class GameInstance{
             
         }
         requestAnimationFrame(this.GameLoop);
+    }
+    speedController(){
+        // console.log(window.innerWidth*0.003703);
+        return window.innerWidth*0.003703;
     }
 }
 export default GameInstance;

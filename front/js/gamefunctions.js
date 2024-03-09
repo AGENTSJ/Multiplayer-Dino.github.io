@@ -42,7 +42,7 @@ class GameFunctions{
 
     collisionWithPlayer(obj){
         // verbose fn 
-        let slack = 20;
+        let slack = window.innerWidth*0.0185;
         let xp1 =this.player.x+slack;
         let xp2 = this.player.x+this.player.width-slack;
         let xobs1 = obj.x;
@@ -76,7 +76,7 @@ class GameFunctions{
 
                 let obstacleImg = obstacleImgObj.img;
 
-                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,window.innerWidth,true,true,false,true,undefined);
                 obst.stateFn = ()=>{
                     this.moveLeft(obst);
                     this.collisionWithPlayer(obst)

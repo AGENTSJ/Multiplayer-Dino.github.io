@@ -1,56 +1,62 @@
+function scaleWidth(width){
+    let canvasWidth = window.innerWidth;
+    let ratiofactor = 1080/width;
+    let newWidth = canvasWidth/ratiofactor
+    return newWidth;
+}
+function scaleHeight(oldwidth,oldheight,scaledWidth){
+    
+    let ratiofactor = oldheight/oldwidth;
+    let newHeight = ratiofactor*scaledWidth;
+    return newHeight;
+}
 
 let obstImagePaths = [
     
     {
         path:"./assets/obstacles/cactus1.png",
-        height:35,
-        width:25
+        width:scaleWidth(15),
+        height:scaleHeight(10,25,scaleWidth(15)),
     },
     {
         path:"./assets/obstacles/cactus2.png",
-        height:35,
-        width:30
+        width:scaleWidth(20),
+        height:scaleHeight(20,25,scaleWidth(20)),
     },
     {
         path:"./assets/obstacles/cactus3.png",
-        height:35,
-        width:45
+        width:scaleWidth(30),
+        height:scaleHeight(30,25,scaleWidth(30)),
     },
     {
         path:"./assets/obstacles/big-cactus1.png",
-        height:50,
-        width:30
+        width:scaleWidth(20),
+        height:scaleHeight(20,40,scaleWidth(20)),
     },
     {
         path:"./assets/obstacles/big-cactus2.png",
-        height:50,
-        width:60
+        width:scaleWidth(40),
+        height:scaleHeight(40,40,scaleWidth(40)),
     },
     {
         path:"./assets/obstacles/big-cactus3.png",
-        height:50,
-        width:90
+        width:scaleWidth(60),
+        height:scaleHeight(60,40,scaleWidth(60)),
     }
 ]
 
 let playerPath = [
     {
         path:"./assets/player/dino.png",
-        height:50,
-        width:50
+        width:scaleWidth(40),
+        height:scaleHeight(40,40,scaleWidth(40))
     }
 ]
-
-
-// let obstMap = new Map()
-// obstImagePaths.forEach((e,idx)=>{
-//     obstMap.set(idx,e)
-// })
 
 let assets = {
     obstImagePaths:obstImagePaths,
     playerPath:playerPath
-    // map:obstMap
+
 }
     export default assets;
 

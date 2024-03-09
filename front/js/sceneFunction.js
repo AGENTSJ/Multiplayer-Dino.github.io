@@ -5,11 +5,8 @@ class SceneFunction{
     
     createScene(width,height){
         let gameCanvas = document.createElement("canvas");
-        // gameCanvas.width = width;
-        gameCanvas.width = window.innerWidth;
-
-        // gameCanvas.height = height;
-        gameCanvas.height = window.innerWidth*0.2;
+        gameCanvas.width = width;
+        gameCanvas.height = height;
         let context = gameCanvas.getContext('2d');
         let gameCont = document.getElementById("games")
         gameCont.appendChild(gameCanvas)
