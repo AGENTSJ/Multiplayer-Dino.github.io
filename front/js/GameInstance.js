@@ -70,7 +70,7 @@ class GameInstance{
     }
     speedController(){
         console.log("speed",window.innerWidth*0.003703);
-        let speedevnt = new CustomEvent("test",{detail:{data:`speed ${window.innerWidth*0.003703}`}})
+        let speedevnt = new CustomEvent("test",{detail:{data:`width ${window.innerWidth} \nspeed ${window.innerWidth*0.003703}`}})
         window.dispatchEvent(speedevnt)
         return window.innerWidth*0.003703;
     }
