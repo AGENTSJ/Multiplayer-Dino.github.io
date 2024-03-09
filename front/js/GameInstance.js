@@ -66,12 +66,12 @@ class GameInstance{
             this.gameFunctions.addAllObstacles(this.obstacleArr);
             
         }
+        
         requestAnimationFrame(this.GameLoop);
     }
     speedController(){
-        console.log("speed",window.innerWidth*0.003703);
-        let speedevnt = new CustomEvent("test",{detail:{data:`width ${window.innerWidth} \nspeed ${window.innerWidth*0.003703}`}})
-        window.dispatchEvent(speedevnt)
+        // console.log("speed",window.innerWidth*0.003703);
+      
         return window.innerWidth*0.003703;
     }
 }

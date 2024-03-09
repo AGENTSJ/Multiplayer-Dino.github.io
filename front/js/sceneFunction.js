@@ -64,19 +64,6 @@ class SceneFunction{
             }
         }
     }
-    // addObject_toScene(obj,context,canvas){
-    //     if (obj!==undefined){
-    
-    //         context.drawImage(obj.img, obj.x, obj.y, obj.wp, obj.hp);
-    //         if(obj.gravity){
-    //             this.addGravity(obj,canvas);
-    //         }
-
-    //         if(obj.state!==undefined && obj.state){
-    //             obj.stateFn(obj);
-    //         }
-    //     }
-    // }
 
 }
 
