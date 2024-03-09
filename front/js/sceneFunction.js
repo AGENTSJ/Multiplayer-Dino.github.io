@@ -1,5 +1,8 @@
 class SceneFunction{
+    constructor(){
 
+    }
+    
     createScene(width,height){
         let gameCanvas = document.createElement("canvas");
         gameCanvas.width = width;
@@ -38,7 +41,9 @@ class SceneFunction{
     }
 
     addGravity(gameObject,canvas){
-        let gr = 6;
+        const gravityRatioFactor = 0.00555;
+        // let gr = 6;
+        let gr = gravityRatioFactor*window.innerWidth;
         if(gameObject.y <= canvas.height-gameObject.height-5){
             gameObject.y+=gr;
         }else{
@@ -59,6 +64,19 @@ class SceneFunction{
             }
         }
     }
+    // addObject_toScene(obj,context,canvas){
+    //     if (obj!==undefined){
+    
+    //         context.drawImage(obj.img, obj.x, obj.y, obj.wp, obj.hp);
+    //         if(obj.gravity){
+    //             this.addGravity(obj,canvas);
+    //         }
+
+    //         if(obj.state!==undefined && obj.state){
+    //             obj.stateFn(obj);
+    //         }
+    //     }
+    // }
 
 }
 

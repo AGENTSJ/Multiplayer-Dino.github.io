@@ -1,5 +1,3 @@
-import SceneFunction from "./sceneFunction.js";
-
 function getRandomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -8,9 +6,10 @@ function getRandomValue(min, max) {
 class GameFunctions{
 
     constructor(canvas,context,obstacleSpeed,gameInstance){
-        this.canvas = canvas;
+        
         this.gameInstance = gameInstance
-        this.sceneFunction = new SceneFunction();
+        this.canvas = canvas;
+        this.sceneFunction = this.gameInstance.sceneFunction;
         this.context = context;
         this.obstacleSpeed=obstacleSpeed;
         this.spawnRate = 1000;//spawn 1 obst per 1 second
@@ -34,14 +33,16 @@ class GameFunctions{
             }
         )
     }
+
     moveLeft(obj){
         if(obj!==undefined){
             obj.x-=this.obstacleSpeed;
         }
     }
+
     collisionWithPlayer(obj){
         // verbose fn 
-        let slack = 20;
+        let slack = window.innerWidth*0.0185;
         let xp1 =this.player.x+slack;
         let xp2 = this.player.x+this.player.width-slack;
         let xobs1 = obj.x;
@@ -54,30 +55,32 @@ class GameFunctions{
 
         if(xp2>xobs1 && xp1<xobs2 && yp1<yobs2 && yp2>yobs1){
             this.state = false;//game state
-
-
-            console.log("game over send");
-            this.gameInstance.connection.sendGameState(); //con
-
+            if(this.gameInstance.mode===1){
+                this.gameInstance.connection.sendGameState()
+            }
         }
 
     }
+
     spawnObstacles(obsArr,obstacle_Asset_Arr){
         
         setInterval(()=>{
     
             if(obstacle_Asset_Arr!==undefined && this.state){
                 let randomIdx  = getRandomValue(0,obstacle_Asset_Arr.length-1);
+                
+                if(this.gameInstance.mode===1){
+                    this.gameInstance.connection.sendObstacleSpawn(randomIdx);
+                }
                 let obstacleImgObj = obstacle_Asset_Arr[randomIdx];
 
                 let obstacleImg = obstacleImgObj.img;
 
-                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+                let obst = this.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,this.canvas.height-obstacleImgObj.height,window.innerWidth,true,true,false,true,undefined);
                 obst.stateFn = ()=>{
                     this.moveLeft(obst);
                     this.collisionWithPlayer(obst)
                 }
-                this.gameInstance.connection.sendObstacleSpawn(randomIdx);//con
                 obsArr.push(
                     obst
                 );
@@ -89,15 +92,17 @@ class GameFunctions{
         },this.spawnRate)
         
     }
+    
     addAllObstacles(obsArr){
-        for(let i =0;i<obsArr.length;i++){
+        
+        for(let i =0;i<this.gameInstance.obstacleArr.length;i++){
             
-            this.sceneFunction.addObject_toScene(obsArr[i],this.context,this.canvas);
-            // this.moveLeft(obsArr[i]);
+            this.sceneFunction.addObject_toScene(this.gameInstance.obstacleArr[i],this.context,this.canvas);
+
         }
     }
     reset(obsArr){
-        obsArr.length=0;
+        this.gameInstance.obstacleArr.length=0;
     }
 
 }

@@ -2,20 +2,22 @@ import controllers from "./InputController.js";
 import GameFunctions from "./gamefunctions.js";
 import SceneFunction from "./sceneFunction.js";
 import assets from "./assets.js";
-import Connections from "./connection.js";
+
+
 let {InputController,NetworkController} = controllers;
 
 class GameInstance{
     //0 offline 
     //1 online
-    constructor(mode){
+    constructor(mode,name){
 
-        this.connection = new Connections(this);
+        this.name = name;
         this.mode = mode;
         this.inputController;
+        this.connection;
         this.sceneFunction = new SceneFunction();
-        this.gameScene = this.sceneFunction.createScene(1080,200);
-        this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,4,this);
+        this.gameScene = this.sceneFunction.createScene(window.innerWidth,window.innerWidth*0.185);
+        this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,this.speedController(),this);
         this.obstacleArr = [];
         this.dino;
         this.obstacleAssetArr=[];
@@ -30,10 +32,7 @@ class GameInstance{
                 (resolved)=>{
                     let dinoObj = resolved[0];
                     this.dino = this.gameFunctions.createGameObject(dinoObj.img,dinoObj.width,dinoObj.height,this.gameScene.canvas.height-dinoObj.height, 10,true,true,true,false,undefined);
-            
-
-                    this.inputController = new InputController(this.dino,this.gameFunctions,this.obstacleArr);
-                   
+                    this.inputController = new InputController(this);
                     this.gameFunctions.player = this.dino;
                     requestAnimationFrame(this.GameLoop)
                 }
@@ -57,7 +56,7 @@ class GameInstance{
         
     } 
     GameLoop(){
-        
+        // console.log(this.obstacleArr.length);
         if(this.gameFunctions.state){
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
@@ -68,6 +67,10 @@ class GameInstance{
             
         }
         requestAnimationFrame(this.GameLoop);
+    }
+    speedController(){
+        // console.log(window.innerWidth*0.003703);
+        return window.innerWidth*0.003703;
     }
 }
 export default GameInstance;
