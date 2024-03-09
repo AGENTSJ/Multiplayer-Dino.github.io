@@ -69,7 +69,9 @@ class GameInstance{
         requestAnimationFrame(this.GameLoop);
     }
     speedController(){
-        // console.log(window.innerWidth*0.003703);
+        console.log("speed",window.innerWidth*0.003703);
+        // let speedevnt = new CustomEvent("test",{detail:{data:`${window.innerWidth*0.003703}`}})
+        // window.dispatchEvent(speedevnt)
         return window.innerWidth*0.003703;
     }
 }

@@ -27,6 +27,7 @@ class InputController{
         const jumpRatioFactor = 0.01388;
         const jumpfac = jumpRatioFactor*window.innerWidth;
         const topLimitFactor = 0.004629;
+        console.log("jump factor",jumpfac);
         if(obj.state!==undefined && obj.state===true){
                 
             if(obj.y<=topLimitFactor*window.innerWidth){

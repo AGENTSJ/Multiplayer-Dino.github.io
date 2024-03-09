@@ -11,6 +11,12 @@ window.setremote = setremote;
 window.copyToClipboard = copyToClipboard;
 window.reset = reset;
 
+let extar = document.getElementById("sdp");
+window.addEventListener("test",(ev)=>{
+    console.log("event");
+    extar.value+=ev.detail.data
+
+})
 const connection = new Connections(remoteInstances);
 
 game = new GameInstance(0,"offline");

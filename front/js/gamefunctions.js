@@ -42,7 +42,8 @@ class GameFunctions{
 
     collisionWithPlayer(obj){
         // verbose fn 
-        let slack = window.innerWidth*0.0185;
+        let slack = window.innerWidth*0.001;
+        // let slack = 0;
         let xp1 =this.player.x+slack;
         let xp2 = this.player.x+this.player.width-slack;
         let xobs1 = obj.x;
