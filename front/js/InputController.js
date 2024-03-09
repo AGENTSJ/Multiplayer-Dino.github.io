@@ -27,6 +27,8 @@ class InputController{
         const jumpRatioFactor = 0.01388;
         const jumpfac = jumpRatioFactor*window.innerWidth;
         const topLimitFactor = 0.004629;
+        let jmpevent = new CustomEvent("test",{detail:{data:`jump ${jumpfac}`}})
+        window.dispatchEvent(jmpevent)
         console.log("jump factor",jumpfac);
         if(obj.state!==undefined && obj.state===true){
                 
