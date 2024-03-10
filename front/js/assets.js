@@ -52,10 +52,17 @@ let playerPath = [
         height:scaleHeight(40,40,scaleWidth(40))
     }
 ]
-
+let decorationPath = [
+    {
+        path:"./assets/game-over.png",
+        width:scaleWidth(400),
+        height:scaleHeight(400,100,scaleWidth(400))
+    }
+]
 let assets = {
     obstImagePaths:obstImagePaths,
-    playerPath:playerPath
+    playerPath:playerPath,
+    decorationPath:decorationPath
 
 }
     export default assets;

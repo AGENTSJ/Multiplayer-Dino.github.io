@@ -15,6 +15,7 @@ class GameFunctions{
         this.spawnRate = 1000;//spawn 1 obst per 1 second
         this.player = undefined;
         this.state = false;
+        this.gameOver = false;
 
     }
     createGameObject(img,width,height,y,x,ground,collision,gravity,state,stateFn){
@@ -41,9 +42,13 @@ class GameFunctions{
     }
 
     collisionWithPlayer(obj){
-        // verbose fn 
-        let slack = window.innerWidth*0.001;
-        // let slack = 0;
+        
+        let slack;
+        if(window.innerWidth<=290){
+            slack = obj.height*0.1
+        }else{
+            slack = obj.height*0.2;
+        }
         let xp1 =this.player.x+slack;
         let xp2 = this.player.x+this.player.width-slack;
         let xobs1 = obj.x;
@@ -55,6 +60,7 @@ class GameFunctions{
         let yobs2 = obj.y+obj.height;
 
         if(xp2>xobs1 && xp1<xobs2 && yp1<yobs2 && yp2>yobs1){
+            this.gameOver= true;
             this.state = false;//game state
             if(this.gameInstance.mode===1){
                 this.gameInstance.connection.sendGameState()
@@ -104,6 +110,7 @@ class GameFunctions{
     }
     reset(obsArr){
         this.gameInstance.obstacleArr.length=0;
+        this.gameOver = false;
     }
 
 }
