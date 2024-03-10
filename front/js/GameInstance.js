@@ -15,7 +15,7 @@ class GameInstance{
         this.mode = mode;
         this.inputController;
         this.connection;
-        this.sceneFunction = new SceneFunction();
+        this.sceneFunction = new SceneFunction(this.mode);
         this.gameScene = this.sceneFunction.createScene(window.innerWidth,window.innerWidth*0.185);
         this.gameFunctions = new GameFunctions(this.gameScene.canvas,this.gameScene.context,this.speedController(),this);
         this.obstacleArr = [];

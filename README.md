@@ -2,7 +2,7 @@
 
 Welcome to the multiplayer version of the classic Chrome Dino game! This project takes the fun of the single-player game and amplifies it by adding a multiplayer feature. The best part? It's serverless!
 
-<!-- ![Game Preview](link-to-a-screenshot-of-your-game) -->
+
 
 ## 🚀 Getting Started
 
@@ -10,12 +10,13 @@ To get started with the game, simply visit the [Multiplayer Dino Game](https://a
 
 ## 🎮 How to Play
 
-The game controls are simple:
+The Single Player game controls are simple:
 
-- Press `Space` to start the game.
-- or click the game area
+- Press `SinglePlayer` button
+- Press `Start/Reset` to start and reset.(i know unexpected)
+- Click the game area or space bar to jump
 
-Compete with your friends and see who can score the highest!
+The multiplayer can be confusing as it is serverless and uses webRtc but follow the guide.
 
 ## 🛠️ Built With
 

@@ -1,15 +1,25 @@
 class SceneFunction{
-    constructor(){
-
+    constructor(mode){
+        this.mode = mode;
     }
     
     createScene(width,height){
         let gameCanvas = document.createElement("canvas");
+        let nameDiv = document.createElement("div");
+        nameDiv.classList.add("nameDiv");
+        if(this.mode ===0){
+            nameDiv.innerText = "You";
+        }else{
+            nameDiv.innerText = "Online Player";
+        }
+    
         gameCanvas.width = width;
         gameCanvas.height = height;
         let context = gameCanvas.getContext('2d');
-        let gameCont = document.getElementById("games")
-        gameCont.appendChild(gameCanvas)
+        let gameCont = document.getElementById("games");
+        gameCont.appendChild(nameDiv);
+        gameCont.appendChild(gameCanvas);
+
         let scene = {
             canvas:gameCanvas,
             context:context
