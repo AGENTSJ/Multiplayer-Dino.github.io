@@ -72,7 +72,7 @@ class GameFunctions{
     spawnObstacles(obsArr,obstacle_Asset_Arr){
         
         setInterval(()=>{
-    
+            
             if(obstacle_Asset_Arr!==undefined && this.state){
                 let randomIdx  = getRandomValue(0,obstacle_Asset_Arr.length-1);
                 

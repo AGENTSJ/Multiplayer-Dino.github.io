@@ -62,6 +62,8 @@ class WebRTC{
     }
     handleDataChannelOpen() {
         console.log('Data channel open');
+        let channelOpenEvnt = new Event("chanOpn");
+        window.dispatchEvent(channelOpenEvnt);
     }
     handleDataChannelMessage(event) {
         let message = JSON.parse(event.data);

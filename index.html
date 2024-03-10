@@ -5,28 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./front/dino.css">
     <link rel="shortcut icon" href="./assets/player/dino.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <title>Multiplayer-Dino</title>
 </head>
 <body>
 
+    <div class="header">
+        <img src="./assets/player/dino.png" alt="" srcset="">
+
+        <h1 class="game-title">MultiPlayer Dino</h1>
+    </div>
     <div id="games" class="gameCont">
 
     </div>
     
     <div class="buttonCont">
-        <button onclick="reset()">Start/Reset</button>
+
+        <div class="selectionBtns btncnt" id="uiBtns">
+            <button onclick="setSingle()">SinglePLayer</button>
+            <button onclick="setMulti()">MultiPlayer</button>
+        </div>
+
+        <div class="singleplayerBtns btncnt" id="sngbtn">
+            <button onclick="reset()">Start/Reset</button>
+        </div>
+
+        <div class="connectionBtns btncnt" id="multiUI">
+
+
+            <textarea name="" id="sdp" cols="30" rows="10"></textarea>
+            
+            <button onclick="handleHost()" id="hostbtn">Host</button>
+            
+            <button onclick="copyToClipboard()">Copy</button> 
+            
+            <button onclick="handleJoin()" id="joinbtn">Join</button>
         
-        <button onclick="handleHost()">host</button>
-    
-        <textarea name="" id="sdp" cols="30" rows="10"></textarea>
-    
-        <button onclick="copyToClipboard()">Copy to clipboard</button> 
+            <button onclick="setremote()">Accept</button>
+
+            <div class="guide" >
+                <p id="guide"></p>
+            </div>
+        </div>
+
+        <div class="multiPlayerBtns btncnt" id="redyUi">
+
+            <button onclick="readyEvent()">Ready</button>
+
+        </div>
         
-        <button onclick="handleJoin()">join</button>
-    
-        <button onclick="setremote()">Accept</button>
-        
-        <button onclick="readyEvent()">Ready</button>
     </div>
 
 </body>
