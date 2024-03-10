@@ -13,7 +13,7 @@ To get started with the game, simply visit the [Multiplayer Dino Game](https://a
 The Single Player game controls are simple:
 
 - Press `SinglePlayer` button
-- Press `Start/Reset` to start and reset.(i know unexpected)
+- Press `Start/Reset` to start and reset. (i know shocking)
 - Click the game area or space bar to jump
 
 The multiplayer can be confusing as it is serverless and uses webRtc but follow the guide.
