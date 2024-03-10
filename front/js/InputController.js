@@ -27,6 +27,8 @@ class InputController{
         const jumpRatioFactor = 0.01388;
         const jumpfac = jumpRatioFactor*window.innerWidth;
         const topLimitFactor = 0.004629;
+   
+        // console.log("client jump factor",jumpfac);
         if(obj.state!==undefined && obj.state===true){
                 
             if(obj.y<=topLimitFactor*window.innerWidth){
@@ -51,7 +53,7 @@ class NetworkController{
 
         let obstacleImg = obstacleImgObj.img;
 
-        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,1000,true,true,false,true,undefined);
+        let obst = gameInstance.gameFunctions.createGameObject(obstacleImg,obstacleImgObj.width,obstacleImgObj.height,gameInstance.gameFunctions.canvas.height-obstacleImgObj.height,window.innerWidth,true,true,false,true,undefined);
         obst.stateFn = ()=>{
             gameInstance.gameFunctions.moveLeft(obst);
             gameInstance.gameFunctions.collisionWithPlayer(obst)
@@ -70,13 +72,18 @@ class NetworkController{
         gameInstance.dino.stateFn = this.jumpfn
     }
     jumpfn(obj){
+        const jumpRatioFactor = 0.01388;
+        const jumpfac = jumpRatioFactor*window.innerWidth;
+        const topLimitFactor = 0.004629;
+   
+        // console.log(" remote jump factor",jumpfac);
         if(obj.state!==undefined && obj.state===true){
                 
-            if(obj.y<=0){
+            if(obj.y<=topLimitFactor*window.innerWidth){
                 obj.state=false;
             }else{
                 obj.ground = false;
-                obj.y-=15;
+                obj.y-=jumpfac;
             }
         }
         

@@ -62,6 +62,8 @@ class WebRTC{
     }
     handleDataChannelOpen() {
         console.log('Data channel open');
+        let channelOpenEvnt = new Event("chanOpn");
+        window.dispatchEvent(channelOpenEvnt);
     }
     handleDataChannelMessage(event) {
         let message = JSON.parse(event.data);
@@ -77,6 +79,12 @@ class WebRTC{
                 break;
             case "jump":
                 NetController.makeJump(gameInstance);
+                break;
+            case "ready":
+                gameInstance.gameFunctions.state = true;
+                let remReadyevt = new Event("remReady");
+                window.dispatchEvent(remReadyevt);
+                
                 break;
         }
         
@@ -101,20 +109,23 @@ class Connections{
         this.rtc.peerConnection.setRemoteDescription(offerObj);
     }
     joinSession(){
-        let textar = document.getElementById("sdp")
+        let textar = document.getElementById("sdp");
         let offerObj = JSON.parse(textar.value);
         textar.value = "";
         let offer = new RTCSessionDescription({type:"offer", sdp:offerObj.sdp});
         this.rtc.joinWebRTC(offer);
     }
     sendJump(){
-        this.rtc.sendMessage({"event":"jump"})
+        this.rtc.sendMessage({"event":"jump"});
     }
     sendObstacleSpawn(idx){
-        this.rtc.sendMessage({"event":"obstSpawn","data":idx})
+        this.rtc.sendMessage({"event":"obstSpawn","data":idx});
     }
     sendGameState(){
-        this.rtc.sendMessage({"event":"gameOver"})
+        this.rtc.sendMessage({"event":"gameOver"});
+    }
+    sendReady(){
+        this.rtc.sendMessage({"event":"ready"});
     }
 }
 export default Connections;

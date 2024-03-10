@@ -21,11 +21,17 @@ class GameInstance{
         this.obstacleArr = [];
         this.dino;
         this.obstacleAssetArr=[];
+        this.decorationAssetArr = [];
+        this.decorationGameObjects=[];
         this.GameLoop = this.GameLoop.bind(this)
 
         if(mode===0){//main player(offline)
 
+            // loading obstacles
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
+            
+            this.sceneFunction.loadDecorations(assets.decorationPath,this.decorationAssetArr,this.decorationGameObjects,this.gameFunctions)
+
             this.gameFunctions.spawnObstacles(this.obstacleArr,this.obstacleAssetArr);
     
             this.sceneFunction.loadImages(assets.playerPath).then(
@@ -38,7 +44,7 @@ class GameInstance{
                 }
             )
         }else{//remote player (online)
-            this.gameFunctions.state = true;
+            
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
             this.sceneFunction.loadImages(assets.playerPath).then(
                 (resolved)=>{
@@ -48,15 +54,13 @@ class GameInstance{
                     requestAnimationFrame(this.GameLoop)
                 }
             )
-
-
             
         }
 
         
     } 
     GameLoop(){
-        // console.log(this.obstacleArr.length);
+
         if(this.gameFunctions.state){
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
@@ -66,10 +70,13 @@ class GameInstance{
             this.gameFunctions.addAllObstacles(this.obstacleArr);
             
         }
+        if(this.gameFunctions.gameOver){
+            this.sceneFunction.addObject_toScene(this.decorationGameObjects[0],this.gameFunctions.context,this.gameFunctions.canvas)
+        }
+        
         requestAnimationFrame(this.GameLoop);
     }
-    speedController(){
-        // console.log(window.innerWidth*0.003703);
+    speedController(){      
         return window.innerWidth*0.003703;
     }
 }

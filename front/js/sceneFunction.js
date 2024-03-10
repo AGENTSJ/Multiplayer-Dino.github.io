@@ -64,20 +64,27 @@ class SceneFunction{
             }
         }
     }
-    // addObject_toScene(obj,context,canvas){
-    //     if (obj!==undefined){
-    
-    //         context.drawImage(obj.img, obj.x, obj.y, obj.wp, obj.hp);
-    //         if(obj.gravity){
-    //             this.addGravity(obj,canvas);
-    //         }
 
-    //         if(obj.state!==undefined && obj.state){
-    //             obj.stateFn(obj);
-    //         }
-    //     }
-    // }
-
+    loadDecorations(decorationPath,decorationAssetArr,decorationGameObjects,gameFunctions){
+        this.loadImages(decorationPath).then((resolved)=>{
+            decorationAssetArr.push(...resolved);
+            for(let i = 0;i<decorationAssetArr.length;i++){
+                let decor = decorationAssetArr[i]; 
+                let x,y;
+                
+                if(i===0){//game over decoration
+                    x = (window.innerWidth/2)-decor.width/2;
+                    y = (gameFunctions.canvas.height/2)-decor.height/2
+                    
+                }else{//other decoration if avilable
+                    x = window.innerWidth;
+                    y = gameFunctions.canvas.height-decor.height;
+                }
+                let decorObj = gameFunctions.createGameObject(decor.img,decor.width,decor.height,y,x,true,false,false,false,false,undefined);
+                decorationGameObjects.push(decorObj);
+            }
+        });
+    }
 }
 
 export default SceneFunction;
