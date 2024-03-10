@@ -38,7 +38,7 @@ class GameInstance{
                 }
             )
         }else{//remote player (online)
-            this.gameFunctions.state = true;
+            // this.gameFunctions.state = true;
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
             this.sceneFunction.loadImages(assets.playerPath).then(
                 (resolved)=>{

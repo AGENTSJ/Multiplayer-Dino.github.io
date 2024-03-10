@@ -2,6 +2,8 @@ import GameInstance from "./js/GameInstance.js";
 import Connections from "./js/connection.js";
 
 let game;
+let readyFlag = false;
+
 let game2;
 let remoteInstances = [];
 
@@ -11,6 +13,12 @@ window.setremote = setremote;
 window.copyToClipboard = copyToClipboard;
 window.reset = reset;
 window.readyEvent = readyEvent;
+
+window.addEventListener("remReady",()=>{
+    if(readyFlag){
+        game.gameFunctions.state = true;
+    }
+})
 
 const connection = new Connections(remoteInstances);
 
@@ -46,9 +54,17 @@ function copyToClipboard() {
     document.execCommand("copy");
 }
 function reset(event){
-    // game.gameFunctions.state = true;
+    if(game.mode===0){
+        game.gameFunctions.state = true;
+    }
     game.gameFunctions.reset(game.obstacleArr);
 }
+
 function readyEvent(){
-    
+    connection.sendReady();
+    readyFlag= true;
+    if(game2.gameFunctions.state ===true){
+        game.gameFunctions.state = true;
+    }
+
 }
