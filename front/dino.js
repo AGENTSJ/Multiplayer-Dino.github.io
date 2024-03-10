@@ -16,7 +16,7 @@ window.setremote = setremote;
 window.copyToClipboard = copyToClipboard;
 window.reset = reset;
 window.readyEvent = readyEvent;
-
+window.replay = clientReplay;
 setUp();
 
 window.addEventListener("remReady",()=>{
@@ -24,7 +24,9 @@ window.addEventListener("remReady",()=>{
         game.gameFunctions.state = true;
     }
 })
-
+window.addEventListener("replay",()=>{
+    replay();
+})
 
 const connection = new Connections(remoteInstances);
 
@@ -78,4 +80,18 @@ function readyEvent(){
         game.gameFunctions.state = true;
     }
 
+}
+function clientReplay(){
+    connection.sendReplay();
+    replay();
+
+}
+function replay(){
+
+    game.gameFunctions.gameOver = false;
+    game2.gameFunctions.gameOver = false;
+    game.gameFunctions.reset();
+    game2.gameFunctions.reset();
+    game.gameFunctions.state = true;
+    game2.gameFunctions.state = true;
 }

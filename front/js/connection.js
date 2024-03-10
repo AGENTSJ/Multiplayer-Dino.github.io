@@ -86,7 +86,11 @@ class WebRTC{
                 window.dispatchEvent(remReadyevt);
                 
                 break;
-        }
+            case "replay":
+                let replayevent = new Event("replay");
+                window.dispatchEvent(replayevent);
+                break;
+        }   
         
     } 
 
@@ -126,6 +130,9 @@ class Connections{
     }
     sendReady(){
         this.rtc.sendMessage({"event":"ready"});
+    }
+    sendReplay(){
+        this.rtc.sendMessage({'event':"replay"})
     }
 }
 export default Connections;
