@@ -39,7 +39,9 @@ canvas{
     justify-content: center;
     align-items: center;
 }
-
+.rpl{
+    margin-left: 20px;
+}
 .header img {
     width: 100%;
     max-width: 50px;
