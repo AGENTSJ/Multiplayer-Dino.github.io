@@ -42,7 +42,7 @@ function handleJoin(){
     connection.joinSession();
     game.mode = 1;
     game.connection = connection;
-    game2 = new GameInstance(1,"online");
+    game2 = new GameInstance(2,"online");
     game2.connection = connection;
     remoteInstances.push(game2);
     GuideJoin(1);
@@ -53,7 +53,7 @@ function setremote(){
     connection.remoteConnection();
     game.mode = 1;
     game.connection = connection;
-    game2 = new GameInstance(1,"online");
+    game2 = new GameInstance(2,"online");
     game2.connection = connection;
     remoteInstances.push(game2);
     GuideAcceptee();
