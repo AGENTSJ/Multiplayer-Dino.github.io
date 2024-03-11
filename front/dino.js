@@ -32,7 +32,7 @@ const connection = new Connections(remoteInstances);
 
 game = new GameInstance(0,"offline");
 
-scoreMaintainer();
+
 
 function handleHost(){
   connection.hostSession();
@@ -95,22 +95,4 @@ function replay(){
     game2.gameFunctions.reset();
     game.gameFunctions.state = true;
     game2.gameFunctions.state = true;
-}
-function scoreMaintainer(){
-    let score = 0
-    let scoreDiv = document.getElementById("scrdiv");
-    setInterval(
-       ()=>{
-        if(game.gameFunctions.state){
-            score++;
-            // console.log(score);
-            scoreDiv.innerText = `${score}`
-        }else{
-            score=0;
-            // scoreDiv.innerText
-        }
-            
-       },500
-    )
-
 }
