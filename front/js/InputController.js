@@ -15,7 +15,7 @@ class InputController{
     }
 
     makeJump = ()=>{
-        if(this.gameInstance.dino.ground){
+        if(this.gameInstance.dino.ground &&this.gameInstance.gameFunctions.state){
             this.gameInstance.dino.state = true;//makes statefn to run in addobstacletoscene fn in sceneFunction
             this.gameInstance.dino.stateFn = this.jumpfn;
             if(this.gameInstance.mode===1){
