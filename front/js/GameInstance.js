@@ -62,10 +62,8 @@ class GameInstance{
         
     } 
     GameLoop(){
+        console.log("runn",this.gameFunctions.state);
         if(this.gameFunctions.state){
-            // if(this.mode ===2){
-            //     console.log("running tho");
-            // }
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
         

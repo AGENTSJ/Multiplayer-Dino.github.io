@@ -72,7 +72,6 @@ class WebRTC{
         
         switch(message.event){
             case "obstSpawn":
-                // console.log("spawn from remote ",gameInstance.gameFunctions.state);
                 NetController.spawnObstacle(gameInstance,message.data);
                 break;
             case "gameOver":
