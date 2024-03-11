@@ -10,7 +10,8 @@ class InputController{
             }
         })
 
-        this.gameInstance.gameFunctions.canvas.addEventListener('click', this.makeJump);
+        // this.gameInstance.gameFunctions.canvas.addEventListener('click', this.makeJump);
+        window.addEventListener('click', this.makeJump);
     }
 
     makeJump = ()=>{

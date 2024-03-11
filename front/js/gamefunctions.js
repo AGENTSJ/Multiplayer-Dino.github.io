@@ -11,11 +11,15 @@ class GameFunctions{
         this.canvas = canvas;
         this.sceneFunction = this.gameInstance.sceneFunction;
         this.context = context;
+
         this.obstacleSpeed=obstacleSpeed;
         this.spawnRate = 1000;//spawn 1 obst per 1 second
+
         this.player = undefined;
         this.state = false;
         this.gameOver = false;
+        this.incrCount = 0;
+        this.increaseSpeed = this.increaseSpeed.bind(this)
 
     }
     createGameObject(img,width,height,y,x,ground,collision,gravity,state,stateFn){
@@ -112,6 +116,23 @@ class GameFunctions{
         this.gameInstance.obstacleArr.length=0;
         this.gameOver = false;
     }
+
+    SpeedController(){
+        setInterval(
+            this.increaseSpeed,
+            5000
+        )
+    }
+    increaseSpeed(){
+       
+        if(this.incrCount<=5 &&this.state){
+            console.log(this.incrCount);
+            this.incrCount++;
+            this.obstacleSpeed+=(window.innerWidth*0.003703)/2;
+
+        }
+    }
+    
 
 }
 

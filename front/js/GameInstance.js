@@ -43,6 +43,7 @@ class GameInstance{
                     requestAnimationFrame(this.GameLoop)
                 }
             )
+            
         }else{//remote player (online)
             
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
@@ -56,6 +57,7 @@ class GameInstance{
             )
             
         }
+        // this.gameFunctions.SpeedController() need to optimise further
 
         
     } 

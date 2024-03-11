@@ -113,3 +113,12 @@ textarea{
         margin-bottom: 10px;
     }
 }
+.scr {
+    margin-top: 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content; /* Adjust as needed */
+}
