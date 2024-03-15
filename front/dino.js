@@ -10,6 +10,8 @@ let readyFlag = false;
 let game2;
 let remoteInstances = [];
 
+let score = 0
+
 window.handleHost = handleHost;
 window.handleJoin = handleJoin;
 window.setremote = setremote;
@@ -32,7 +34,7 @@ const connection = new Connections(remoteInstances);
 
 game = new GameInstance(0,"offline");
 
-scoreMaintainer();
+scoreMaintainer(score);
 
 function handleHost(){
   connection.hostSession();
@@ -95,9 +97,10 @@ function replay(){
     game2.gameFunctions.reset();
     game.gameFunctions.state = true;
     game2.gameFunctions.state = true;
+    score=0;
 }
-function scoreMaintainer(){
-    let score = 0
+function scoreMaintainer(score){
+    
     let scoreDiv = document.getElementById("scrdiv");
     setInterval(
        ()=>{

@@ -47,6 +47,9 @@ class GameInstance{
         }else{//remote player (online)
             
             this.sceneFunction.loadImages(assets.obstImagePaths).then((resolved)=>{this.obstacleAssetArr.push(...resolved)});
+
+            this.sceneFunction.loadDecorations(assets.decorationPath,this.decorationAssetArr,this.decorationGameObjects,this.gameFunctions)
+
             this.sceneFunction.loadImages(assets.playerPath).then(
                 (resolved)=>{
                     let dinoObj = resolved[0];
@@ -62,10 +65,10 @@ class GameInstance{
         
     } 
     GameLoop(){
+        // if(this.mode ===2){
+        //     console.log(this.decorationGameObjects);
+        // }
         if(this.gameFunctions.state){
-            // if(this.mode ===2){
-            //     console.log("running tho");
-            // }
 
             this.gameScene.context.clearRect(0,0,this.gameScene.canvas.width,this.gameScene.canvas.height);
         
@@ -75,6 +78,7 @@ class GameInstance{
             
         }
         if(this.gameFunctions.gameOver){
+            
             this.sceneFunction.addObject_toScene(this.decorationGameObjects[0],this.gameFunctions.context,this.gameFunctions.canvas)
         }
         

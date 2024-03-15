@@ -67,6 +67,7 @@ class NetworkController{
     }
     gameOver(gameInstance){
         gameInstance.gameFunctions.state = false;
+        gameInstance.gameFunctions.gameOver=true;
     }
     makeJump(gameInstance){
         gameInstance.dino.state = true;
